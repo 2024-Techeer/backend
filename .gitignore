@@ -1,0 +1,17 @@
+.idea/
+.vscode/
+.classpath
+.project
+
+target/
+build/
+
+*.log
+*.tmp
+.settings/
+.gradle/
+/target/
+/build/
+/bin/
+/bin/
+/target/
