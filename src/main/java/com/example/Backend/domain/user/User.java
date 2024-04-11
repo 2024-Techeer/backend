@@ -1,8 +1,10 @@
 package com.example.Backend.domain.user;
 
 import com.example.Backend.domain.common.BaseEntity;
+import com.mongodb.lang.NonNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 public class User extends BaseEntity {
-    @Id
+    @Id//PK 지정
     private String id;
     private String name;
     private String email;
@@ -26,3 +28,5 @@ public class User extends BaseEntity {
     }
 
 }
+//MongoDB에서는 스키마가 고정되어 있지 않기 때문에, @Field 어노테이션과 같은 수단을 사용하여 필드 레벨에서 직접 not null 제약 조건을 적용할 수는 없습니다
+//email필드 not null조건 어떻게 추가하지 그럼??
