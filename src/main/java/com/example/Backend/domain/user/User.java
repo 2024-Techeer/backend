@@ -24,6 +24,8 @@ public class User extends BaseEntity {
 
     private String profileId; // Profile 문서의 ObjectId를 참조
 
+
+
     public User() {//기본 생성자
         super(); // BaseEntity의 생성자 호출
         //super() : 조상의 생성자 호출하는 것.(생성자=(인스턴스 초기화 메서드), 초기화블록은 상속되지 않기 때문.)
