@@ -2,6 +2,7 @@ package com.example.Backend.domain.user;
 
 import com.example.Backend.domain.common.BaseEntity;
 import com.mongodb.lang.NonNull;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -16,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @Setter
 public class User extends BaseEntity {
-    @Id//PK 지정
+    @Id// @Id 애노테이션은 MongoDB와 스프링 데이터에서 매우 중요한 역할을 함.이 애노테이션은 해당 필드가 문서의 기본 키(Primary Key)임을 나타냅니다.
     private String id;
     private String name;
     private String email;

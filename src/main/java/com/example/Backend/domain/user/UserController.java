@@ -1,5 +1,6 @@
 package com.example.Backend.domain.user;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserRegisterDto userDto){
+    public ResponseEntity<User> registerUser(@RequestBody @Valid UserRegisterDto userDto){
         User registeredUser = userService.registerUser(userDto);
         return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
     }
