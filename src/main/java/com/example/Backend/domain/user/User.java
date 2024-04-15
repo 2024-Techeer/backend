@@ -1,11 +1,8 @@
 package com.example.Backend.domain.user;
 
 import com.example.Backend.domain.common.BaseEntity;
-import com.mongodb.lang.NonNull;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
