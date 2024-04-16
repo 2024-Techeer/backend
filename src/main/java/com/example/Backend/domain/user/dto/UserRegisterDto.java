@@ -1,4 +1,4 @@
-package com.example.Backend.domain.user;
+package com.example.Backend.domain.user.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;

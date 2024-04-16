@@ -1,5 +1,6 @@
 package com.example.Backend.domain.user;
 
+import com.example.Backend.domain.user.dto.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,4 +22,5 @@ public class UserService {
         newUser.setPassword(userRegisterDto.getPassword());// 실제 서비스에서는 비밀번호를 암호화하여 저장해야 합니다.
         return userRepository.save(newUser);
     }
+
 }
