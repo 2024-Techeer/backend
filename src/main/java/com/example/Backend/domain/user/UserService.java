@@ -2,6 +2,7 @@ package com.example.Backend.domain.user;
 
 import com.example.Backend.domain.user.dto.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,12 @@ public class UserService {
         newUser.setEmail(userRegisterDto.getEmail());
         newUser.setPassword(userRegisterDto.getPassword());// 실제 서비스에서는 비밀번호를 암호화하여 저장해야 합니다.
         return userRepository.save(newUser);
+
+
     }
+    public String encodePassword(String password, PasswordEncoder passwordEncoder){
+        return passwordEncoder.encode(password);
+    }// "단일 책임 원칙(Single Responsibility Principle, SRP)"과 "분리 및 추상화 지키기위해 User.java에서 Userservice로이동
+//UserService 사용자의 데이터를 처리하고 관리하는 데 필요한 로직을 캡슐화 -> 여기가 적합.
 
 }

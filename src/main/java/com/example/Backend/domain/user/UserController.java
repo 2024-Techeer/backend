@@ -6,10 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/v1")
 @RestController//@RestController는 @Controller에 @ResponseBody가 추가된 것입니다.
@@ -22,14 +19,22 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody @Valid UserRegisterDto userDto){
-        User registeredUser = userService.registerUser(userDto);
-        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+//    @PostMapping("/register")
+//    public ResponseEntity<User> registerUser(@RequestBody @Valid UserRegisterDto userDto){
+//        User registeredUser = userService.registerUser(userDto);
+//        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+//    }
+    @GetMapping("/register")
+    public ResponseEntity<String> register(){
+        return ResponseEntity.ok("register page");
     }
 
 //    @PostMapping("auth/login")
 //    public ResponseEntity<User> login(@RequestBody UserLoginDto userLoginDto){
 //    }
+    @GetMapping("/hello")//test 성공;
+        public ResponseEntity<String> hello(){
+            return ResponseEntity.ok("hello");
+    }
 
 }
