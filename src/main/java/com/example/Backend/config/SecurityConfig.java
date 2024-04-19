@@ -32,3 +32,5 @@ public class SecurityConfig  {//WebSecurityConfigurerAdapter 클래스가 Spring
 
 }
 //@Configuration없이는 @Bean 메소드로 정의된 SecurityFilterChain 빈이 Spring 컨테이너에 의해 실제로 등록되지 않을 수 있습니다.
+//CORS는 웹 페이지가 다른 도메인의 리소스에 접근할 수 있도록 허용하는 보안 메커니즘입니다
+//CSRF는 공격자가 사용자의 지식 없이 사용자가 이미 인증된 웹 애플리케이션에서 원치 않는 작업을 수행하도록 하는 공격 유형
