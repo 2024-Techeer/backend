@@ -1,6 +1,7 @@
 package com.example.Backend.domain.user;
 
 import com.example.Backend.domain.common.BaseEntity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -12,17 +13,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 //@AllArgsConstructor : 모든 필드 값을 파라미터로 받는 생성자를 생성
 //@RequiredArgsConstructor : final이나 @NonNull으로 선언된 필드만을 파라미터로 받는 생성자를 생성
 
-@Document// @Document로 MongoDB 컬렉션과 매핑됨.
+@Entity
+@Table(name = "users")// @Document로 MongoDB 컬렉션과 매핑됨.
 @Getter
 @Setter
 public class User extends BaseEntity {
-    @Id// @Id 애노테이션은 MongoDB와 스프링 데이터에서 매우 중요한 역할을 함.이 애노테이션은 해당 필드가 문서의 기본 키(Primary Key)임을 나타냅니다.
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)// @Id 애노테이션은 MongoDB와 스프링 데이터에서 매우 중요한 역할을 함.이 애노테이션은 해당 필드가 문서의 기본 키(Primary Key)임을 나타냅니다.
+    private Long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false)
     private String password;
-
-    private String profileId; // Profile 문서의 ObjectId를 참조
+    @Column(nullable = false)
+    private String profileId;
 
 
 
@@ -32,7 +38,7 @@ public class User extends BaseEntity {
         //@NoArgsConstructor는 조상 생성자는 호출 못하므로 사용 불가
     }
 
-    @Field("refresh_token")// MongoDB에서는 @Field를 사용하여 필드를 명시할 수 있습니다.
+    @Column(name = "refresh_token")// MongoDB에서는 @Field를 사용하여 필드를 명시할 수 있습니다.
     private String refreshToken;
     //refreshtoken은 DB에저장, accesstoken은 ->stateless이므로 저장 X
 
