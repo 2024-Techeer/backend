@@ -4,9 +4,6 @@ import com.example.Backend.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 //@NoArgsConstructor : 파라미터가 없는 디폴트 생성자를 생성
@@ -16,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Entity
 @Table(name = "users")// @Document로 MongoDB 컬렉션과 매핑됨.
 @Getter
-@Setter
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)// @Id 애노테이션은 MongoDB와 스프링 데이터에서 매우 중요한 역할을 함.이 애노테이션은 해당 필드가 문서의 기본 키(Primary Key)임을 나타냅니다.
@@ -27,8 +23,8 @@ public class User extends BaseEntity {
     private String email;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
-    private String profileId;
+//    @Column(nullable = false)
+//    private String profileId;
 
 
 
@@ -53,3 +49,5 @@ public class User extends BaseEntity {
 }
 //MongoDB에서는 스키마가 고정되어 있지 않기 때문에, @Field 어노테이션과 같은 수단을 사용하여 필드 레벨에서 직접 not null 제약 조건을 적용할 수는 없습니다
 //email필드 not null조건 어떻게 추가하지 그럼??
+//엔티티에는 setter사용 지양 -> 바로 DB정보가 바뀔 수 있기때문
+//but DTO는 바로 DB에 적용되지 않으므로 사용.

@@ -19,11 +19,11 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @PostMapping("/register")
-//    public ResponseEntity<User> registerUser(@RequestBody @Valid UserRegisterDto userDto){
-//        User registeredUser = userService.registerUser(userDto);
-//        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
-//    }
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody @Valid UserRegisterDto userDto){
+        User registeredUser = userService.registerUser(userDto);
+        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+    }
     @GetMapping("/register")
     public ResponseEntity<String> register(){
         return ResponseEntity.ok("register page");
