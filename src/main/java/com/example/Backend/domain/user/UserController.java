@@ -24,14 +24,11 @@ public class UserController {
         User registeredUser = userService.registerUser(userDto);
         return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
     }
-    @GetMapping("/register")
-    public ResponseEntity<String> register(){
-        return ResponseEntity.ok("register page");
-    }
 
 //    @PostMapping("auth/login")
 //    public ResponseEntity<User> login(@RequestBody UserLoginDto userLoginDto){
 //    }
+
     @GetMapping("/hello")//test 성공;
         public ResponseEntity<String> hello(){
             return ResponseEntity.ok("hello");

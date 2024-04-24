@@ -16,14 +16,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User registerUser(UserRegisterDto userRegisterDto){
-        User newUser= new User();
-        newUser.setName(userRegisterDto.getName());
-        newUser.setEmail(userRegisterDto.getEmail());
-        newUser.setPassword(userRegisterDto.getPassword());// 실제 서비스에서는 비밀번호를 암호화하여 저장해야 합니다.
+    public User registerUser(UserRegisterDto userRegisterDto) {
+        User newUser = User.builder()
+                .name(userRegisterDto.getName())
+                .email(userRegisterDto.getEmail())
+                .password(userRegisterDto.getPassword())
+                .build();
         return userRepository.save(newUser);
-
-
     }
     public String encodePassword(String password, PasswordEncoder passwordEncoder){
         return passwordEncoder.encode(password);
