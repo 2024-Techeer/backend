@@ -35,7 +35,7 @@ public class UserService {
     }
 
     public Authentication getAuthentication(UserLoginDto userLoginDto) {//로그인
-        User user = userRepository.findByEmail(userLoginDto.getEmail());
+        User user = userRepository.findByEmail(userLoginDto.getEmail()).orElse(null);
         if (user == null) {
             System.out.println("User not found with email: " + userLoginDto.getEmail());
             return null;
@@ -50,6 +50,10 @@ public class UserService {
         //이래서 authenticated가 false->true로 설정된 것.
 
         return auth;
+    }
+
+    public boolean checkEmailAvailability(String email) {
+        return userRepository.findByEmail(email).isEmpty();
     }
 
 
