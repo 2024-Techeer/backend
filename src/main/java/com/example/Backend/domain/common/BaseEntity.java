@@ -1,10 +1,17 @@
 package com.example.Backend.domain.common;
 
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 
+@Getter
+@MappedSuperclass// BaseEintity륾 굳이 테이블로 관리할 필요가 없으므로 테이블로 안생기는데  상속받은 애들한테는 테이블로 들어감엔티티등록
+@EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
     @CreatedDate
     private Date createdAt;

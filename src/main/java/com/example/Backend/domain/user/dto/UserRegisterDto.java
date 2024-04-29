@@ -13,3 +13,5 @@ public class UserRegisterDto {
     private String password;
 }
 //회원가입 DTO
+//DTO를 거쳐서 User 객체에 주입하는 것.
+
