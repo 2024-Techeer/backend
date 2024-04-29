@@ -35,16 +35,16 @@ public class User extends BaseEntity {
 //    }
 
 
-    @Column(name = "refresh_token")
-    private String refreshToken;
-    //refreshtoken은 DB에저장, accesstoken은 ->stateless이므로 저장 X
-
-    public void updateRefreshToken(String refreshToken){
-        this.refreshToken=refreshToken;
-    }
-    public void destroyRefreshToken(){
-        this.refreshToken=null;
-    }
+//    @Column(name = "refresh_token")
+//    private String refreshToken;
+//    //refreshtoken은 DB에저장, accesstoken은 ->stateless이므로 저장 X
+//
+//    public void updateRefreshToken(String refreshToken){
+//        this.refreshToken=refreshToken;
+//    }
+//    public void destroyRefreshToken(){
+//        this.refreshToken=null;
+//    }
 
 
 }
