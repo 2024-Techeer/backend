@@ -33,7 +33,7 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody UserLoginDto userLoginDto) {
         Authentication authentication = userService.getAuthentication(userLoginDto);
         System.out.println(authentication);
-        if (authentication != null && true) {
+        if (authentication != null && authentication.isAuthenticated()) {
             String jwt = tokenProvider.createToken(authentication);
             return ResponseEntity.ok(jwt);  // JWT 토큰 반환
         }

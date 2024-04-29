@@ -2,12 +2,16 @@ package com.example.Backend.domain.user;
 
 import com.example.Backend.domain.user.dto.UserRegisterDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.Backend.domain.user.dto.UserLoginDto;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+
+import java.util.Collections;
 
 @Service
 public class UserService {
@@ -40,7 +44,12 @@ public class UserService {
             System.out.println("Password mismatch for user: " + user.getEmail());
             return null;
         }
-        return new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
+        Authentication auth = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(), Collections.singletonList(authority));
+        //UsernamePasswordAuthenticationToken 생성: 이 객체는 여러 생성자를 가지고 있으며, 권한 목록이 포함된 생성자를 사용할 때 authenticated 속성이 true로 설정됩니다
+        //이래서 authenticated가 false->true로 설정된 것.
+
+        return auth;
     }
 
 
@@ -51,3 +60,7 @@ public class UserService {
 //UserService 사용자의 데이터를 처리하고 관리하는 데 필요한 로직을 캡슐화 -> 여기가 적합.
 
 
+/*
+getauthentication부분 설명
+* 인증 과정 후에는 성공적으로 검증된 사용자 정보와 권한 정보를 포함하여 새로운 UsernamePasswordAuthenticationToken 객체를 생성할 수 있습니다.
+* 이때, 권한 정보(GrantedAuthority 목록)를 포함하여 생성자를 호출하면 내부적으로 authenticated 속성이 true로 설정됩니다.*/
