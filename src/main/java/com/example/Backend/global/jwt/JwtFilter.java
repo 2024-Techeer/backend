@@ -47,5 +47,7 @@ public class JwtFilter extends GenericFilterBean {
         }
         return null;
     }
+    //HTTP 요청의 헤더에서 JWT (JSON Web Token)를 추출하는 역할을 수행합니다.
+    // 주어진 함수 resolveToken은 HttpServletRequest 객체에서 'Authorization' 헤더를 조회하여, 그 값이 "Bearer"로 시작하는 경우, 토큰 부분만을 반환합니다
 
 }
