@@ -34,7 +34,7 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-    public Authentication getAuthentication(UserLoginDto userLoginDto) {
+    public Authentication getAuthentication(UserLoginDto userLoginDto) {//로그인
         User user = userRepository.findByEmail(userLoginDto.getEmail());
         if (user == null) {
             System.out.println("User not found with email: " + userLoginDto.getEmail());

@@ -43,6 +43,8 @@ public class UserController {
 //    public ResponseEntity<User> login(@RequestBody UserLoginDto userLoginDto){
 //}
 
+    @PostMapping("/auth/check")
+
 
     @GetMapping("/hello")//test 성공;
         public ResponseEntity<String> hello(){
