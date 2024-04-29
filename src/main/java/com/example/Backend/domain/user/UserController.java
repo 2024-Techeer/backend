@@ -23,13 +23,13 @@ public class UserController {
         this.tokenProvider=tokenProvider;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<User> registerUser(@RequestBody @Valid UserRegisterDto userDto) {
         User registeredUser = userService.registerUser(userDto);
         return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDto userLoginDto) {
         Authentication authentication = userService.getAuthentication(userLoginDto);
         System.out.println(authentication);
