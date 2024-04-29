@@ -60,7 +60,7 @@ public class TokenProvider implements InitializingBean {
                 .compact();//jwt토큰 생성해서 return
     }
 
-    //이번에는 역으로 token에 담겨있는 정보를 이용해 Authentication객체를 리턴하는 메서드
+    //이번에는 역으로 token에 담겨있는 정보를 디코딩해 Authentication객체를 리턴하는 메서드
     public Authentication getAuthentication(String token){
         Claims claims =Jwts
                 .parserBuilder()
@@ -99,3 +99,48 @@ public class TokenProvider implements InitializingBean {
     // JWT (JSON Web Token)를 파싱(parsing)한다는 것은, 토큰의 문자열 형태를 분석하여 그 안에 담긴 정보를 추출하고 구조적으로 이해하는 과정
     //즉 header/payload/signature 분석한다는 뜻
 }
+
+/*
+* Authentication인터페이스에대한 설명
+* Spring Security에서 `Authentication` 인터페이스는 로그인이 성공한 사용자의 인증 상태를 표현하는 데 사용됩니다.
+*  이 인터페이스는 사용자의 신원 정보와 권한을 포함하고, 인증된 사용자의 세부 정보를 저장하는 역할을 합니다.
+
+`Authentication` 객체는 다음과 같은 주요 정보를 포함합니다:
+
+1. **Principal**: 사용자의 식별 정보, 일반적으로 사용자 이름이나 사용자 객체가 여기에 해당합니다.
+2. **Credentials**: 사용자의 자격 증명 정보, 일반적으로 비밀번호나 특정 키 값입니다. 인증 후에는 보안을 위해 자주 삭제됩니다.
+3. **Authorities**: 사용자에게 부여된 권한 목록을 나타냅니다. 이 권한은 사용자가 시스템 내에서 수행할 수 있는 작업을 결정합니다.
+4. **Details**: 추가적인 사용자 정보를 저장할 수 있으며, 요청에 관련된 메타데이터 등을 포함할 수 있습니다.
+5. **Authenticated**: 이 속성은 사용자의 인증 여부를 나타냅니다. 인증이 완료되면 `true`로 설정됩니다.
+
+`Authentication` 객체는 인증 프로세스의 일부로 생성되며, 일반적으로 로그인 과정에서 사용자의 자격 증명을 검증한 후에 생성됩니다.
+* 인증이 성공하면, 생성된 `Authentication` 객체는 Spring Security의 `SecurityContextHolder`에 저장되어 애플리케이션의 다른 부분에서 사용자의 인증 상태를 조회하고 확인하는 데 사용됩니다.
+* 이를 통해 시스템은 현재 사용자의 인증 상태에 따라 접근 제어 결정을 내릴 수 있습니다.
+* */
+
+/*
+* tokenprovider메서드 설명
+* JWT 토큰 생성:
+Jwts.builder()
+.setSubject(authentication.getName()) : 토큰의 주체를 설정합니다. 일반적으로 사용자의 이름이나 ID가 사용됩니다.
+.claim(AUTHORITIES_KEY, authorities) : 사용자의 권한 정보를 토큰에 포함합니다.
+.signWith(key, SignatureAlgorithm.HS512) : 지정된 키(key)와 HS512 알고리즘을 사용해 토큰을 서명합니다.
+.setExpiration(validity) : 위에서 계산한 만료 시간을 토큰에 설정합니다.
+.compact() : 위의 설정을 모두 포함하는 JWT 토큰을 생성하고 문자열 형태로 반환합니다.
+* */
+
+
+/*
+getAuthentication메서드 설명
+* getAuthentication 메서드는 JWT를 디코딩하고, 그 안에서 사용자 ID와 권한 정보를 추출하여 Spring Security의 Authentication 객체를 생성하는 역할을 합니다.
+*  이 메서드는 JWT의 유효성 검증 및 파싱을 통해 Claims 객체를 얻어내고, 이 객체에서 사용자의 식별자(subject)와 권한(authorities)를 추출합니다.
+토큰 파싱: Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)을 통해 주어진 JWT를 파싱합니다. 이 과정에서 토큰의 서명을 검증하고, JWT 구조의 유효성을 확인합니다.
+Claims 추출: 파싱된 토큰에서 getBody() 메서드를 호출하여 Claims 객체를 얻습니다. 이 객체는 토큰에 포함된 정보들, 즉 페이로드에 접근할 수 있게 해줍니다.
+사용자 식별자 추출: claims.getSubject() 메서드를 통해 토큰에 저장된 사용자의 ID(일반적으로 사용자의 식별자로 사용됨)를 추출합니다.
+권한 정보 추출: 토큰의 auth 클레임에서 사용자에게 할당된 권한을 추출합니다.
+* 이 권한 정보는 콤마로 구분된 문자열 형태로 저장되어 있으며, 이를 분리하고 SimpleGrantedAuthority 객체 리스트로 변환합니다.
+Authentication 객체 생성: 추출한 사용자 ID와 권한 정보를 바탕으로 User 객체를 생성하고, 이를 사용하여 UsernamePasswordAuthenticationToken 객체를 반환합니다.
+* 이 객체는 Spring Security에서 사용자의 인증 정보를 나타내는 Authentication 인터페이스의 구현체입니다.
+따라서, getAuthentication 메서드는 JWT에서 사용자 식별자를 디코딩하고 추출하는 핵심적인 역할을 수행합니다.
+* 이 메서드를 통해 얻어진 Authentication 객체는 사용자가 인증된 상태를 나타내며, 시스템 내에서 사용자의 인증 상태를 관리하는 데 필수적입니다.
+* */
