@@ -49,7 +49,7 @@ public class SecurityConfig  {//WebSecurityConfigurerAdapter 클래스가 Spring
                         .accessDeniedHandler(jwtAccessDeniedHandler)
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .authorizeHttpRequests(authorizeHttpReqeuests -> authorizeHttpReqeuests
-                        .requestMatchers("/api/v1/hello","/api/v1/register","/api/v1/login").permitAll()
+                        .requestMatchers("/api/v1/hello","/api/v1/register","/api/v1/login", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
                 )
 
