@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor // 모든 필드를 포함한 생성자를 생성
 public class User extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)// @Id 애노테이션은 MongoDB와 스프링 데이터에서 매우 중요한 역할을 함.이 애노테이션은 해당 필드가 문서의 기본 키(Primary Key)임을 나타냅니다.
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
     private String name;

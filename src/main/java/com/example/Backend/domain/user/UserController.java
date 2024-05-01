@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RequestMapping("/api/v1")
 @RestController//@RestController는 @Controller에 @ResponseBody가 추가된 것입니다.
 // 당연하게도 RestController의 주용도는 Json 형태로 객체 데이터를 반환하는 것
@@ -37,8 +40,15 @@ public class UserController {
         Authentication authentication = userService.getAuthentication(userLoginDto);
         System.out.println(authentication);
         if (authentication != null && authentication.isAuthenticated()) {
-            String jwt = tokenProvider.createToken(authentication);
-            return ResponseEntity.ok(jwt);  // JWT 토큰 반환
+            String accessToken = tokenProvider.createToken(authentication);
+            String refreshToken = tokenProvider.createRefreshToken(authentication.getName());  // Refresh Token 생성
+            System.out.println(authentication.getName());
+            Map<String, String> tokens = new HashMap<>();
+            tokens.put("access_token", accessToken);
+            tokens.put("refresh_token", refreshToken);
+
+            return ResponseEntity.ok(tokens);
+
         }
         return ResponseEntity.status(401).body("Login failed");
     }
