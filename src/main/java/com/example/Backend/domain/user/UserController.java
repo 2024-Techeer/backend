@@ -1,9 +1,12 @@
 package com.example.Backend.domain.user;
 
+import com.example.Backend.domain.user.dto.EmailCheckDto;
+import com.example.Backend.domain.user.dto.ResponseDto;
 import com.example.Backend.domain.user.dto.UserLoginDto;
 import com.example.Backend.domain.user.dto.UserRegisterDto;
 import com.example.Backend.global.jwt.TokenProvider;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +26,13 @@ public class UserController {
         this.tokenProvider=tokenProvider;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity<User> registerUser(@RequestBody @Valid UserRegisterDto userDto) {
         User registeredUser = userService.registerUser(userDto);
         return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody UserLoginDto userLoginDto) {
         Authentication authentication = userService.getAuthentication(userLoginDto);
         System.out.println(authentication);
@@ -42,6 +45,18 @@ public class UserController {
 //    @PostMapping("auth/login")
 //    public ResponseEntity<User> login(@RequestBody UserLoginDto userLoginDto){
 //}
+
+    @PostMapping("/auth/check")
+    public ResponseEntity<?> checkEmail(@RequestBody EmailCheckDto emailCheckDto){
+        boolean isAvailable = userService.checkEmailAvailability(emailCheckDto.getEmail());
+        if(isAvailable){
+            return ResponseEntity.ok(new ResponseDto("success","사용 가능한 이메일입니다."));
+
+        }
+        else {
+           return ResponseEntity.ok(new ResponseDto("error","사용 중인 이메일입니다."));
+        }
+    }
 
 
     @GetMapping("/hello")//test 성공;
