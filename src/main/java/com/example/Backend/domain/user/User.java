@@ -25,27 +25,6 @@ public class User extends BaseEntity {
     private String email;
     @Column(nullable = false)
     private String password;
-//    @Column(nullable = false)
-//    private String profileId;
-
-//    public User() {//기본 생성자
-//        super(); // BaseEntity의 생성자 호출
-//        //super() : 조상의 생성자 호출하는 것.(생성자=(인스턴스 초기화 메서드), 초기화블록은 상속되지 않기 때문.)
-//        //@NoArgsConstructor는 조상 생성자는 호출 못하므로 사용 불가
-//    }
-
-
-//    @Column(name = "refresh_token")
-//    private String refreshToken;
-//    //refreshtoken은 DB에저장, accesstoken은 ->stateless이므로 저장 X
-//
-//    public void updateRefreshToken(String refreshToken){
-//        this.refreshToken=refreshToken;
-//    }
-//    public void destroyRefreshToken(){
-//        this.refreshToken=null;
-//    }
-
 
 }
 //MongoDB에서는 스키마가 고정되어 있지 않기 때문에, @Field 어노테이션과 같은 수단을 사용하여 필드 레벨에서 직접 not null 제약 조건을 적용할 수는 없습니다
