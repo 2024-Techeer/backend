@@ -27,6 +27,7 @@ public class SwaggerConfig {
                 // SecurityShceme를 통해 인증 방식을 설정함
                 .addSecuritySchemes(jwtSchemaName, new SecurityScheme()
                         .name(jwtSchemaName) // 스키마의 이름 설정
+                        .type(SecurityScheme.Type.HTTP) // HTTP 방식
                         .scheme("bearer") // 사용하는 스키마는 bearer
                         .bearerFormat("JWT")); // bearer 토큰 형식은 JWT
 
@@ -38,3 +39,5 @@ public class SwaggerConfig {
     }
 
 }
+
+
