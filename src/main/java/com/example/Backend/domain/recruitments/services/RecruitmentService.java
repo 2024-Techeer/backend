@@ -5,6 +5,8 @@ import com.example.Backend.domain.common.entities.TechStack;
 import com.example.Backend.domain.common.repositories.PositionRepository;
 import com.example.Backend.domain.common.repositories.TechStackRepository;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentCreateDto;
+import com.example.Backend.domain.recruitments.dtos.RecruitmentDetailDto;
+import com.example.Backend.domain.recruitments.dtos.RecruitmentListDto;
 import com.example.Backend.domain.recruitments.entities.Recruitment;
 import com.example.Backend.domain.recruitments.entities.RecruitmentPosition;
 import com.example.Backend.domain.recruitments.entities.RecruitmentTechStack;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RecruitmentService {
@@ -76,4 +80,66 @@ public class RecruitmentService {
 
         return recruitment;
     }
+
+    public List<RecruitmentListDto> getAllRecruitments() {
+        return recruitmentRepository.findAll().stream().map(recruitment -> {
+            RecruitmentListDto dto = new RecruitmentListDto();
+            dto.setId(recruitment.getId());
+            dto.setTitle(recruitment.getTitle());
+            dto.setType(recruitment.getType());
+            dto.setNumber(recruitment.getNumber());
+            dto.setStartDate(recruitment.getStartDate());
+            dto.setEndDate(recruitment.getEndDate());
+            dto.setDeadline(recruitment.getDeadline());
+            dto.setClosing(recruitment.isClosing());
+            dto.setUserId(recruitment.getUser().getId());
+
+            // Position 이름 추출
+            List<String> positionNames = recruitmentPositionRepository.findByRecruitment(recruitment).stream()
+                    .map(recruitmentPosition -> recruitmentPosition.getPosition().getName())
+                    .collect(Collectors.toList());
+            dto.setPositions(positionNames);
+
+            // TechStack 이름 추출
+            List<String> techStackNames = recruitmentTechStackRepository.findByRecruitment(recruitment).stream()
+                    .map(recruitmentTechStack -> recruitmentTechStack.getTechStack().getName())
+                    .collect(Collectors.toList());
+            dto.setTechStacks(techStackNames);
+
+            return dto;
+        }).collect(Collectors.toList());
+    }
+
+    public Optional<RecruitmentDetailDto> getRecruitmentById(Long id) {
+        return recruitmentRepository.findById(id).map(recruitment -> {
+            RecruitmentDetailDto dto = new RecruitmentDetailDto();
+            dto.setId(recruitment.getId());
+            dto.setTitle(recruitment.getTitle());
+            dto.setType(recruitment.getType());
+            dto.setNumber(recruitment.getNumber());
+            dto.setStartDate(recruitment.getStartDate());
+            dto.setEndDate(recruitment.getEndDate());
+            dto.setDeadline(recruitment.getDeadline());
+            dto.setClosing(recruitment.isClosing());
+            dto.setUserId(recruitment.getUser().getId());
+
+            // Position 이름 추출
+            List<String> positionNames = recruitmentPositionRepository.findByRecruitment(recruitment)
+                    .stream()
+                    .map(recruitmentPosition -> recruitmentPosition.getPosition().getName())
+                    .collect(Collectors.toList());
+            dto.setPositions(positionNames);
+
+            // TechStack 이름 추출
+            List<String> techStackNames = recruitmentTechStackRepository.findByRecruitment(recruitment)
+                    .stream()
+                    .map(recruitmentTechStack -> recruitmentTechStack.getTechStack().getName())
+                    .collect(Collectors.toList());
+            dto.setTechStacks(techStackNames);
+
+            return dto;
+        });
+    }
+
+
 }
