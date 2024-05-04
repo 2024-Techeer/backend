@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import com.example.Backend.domain.user.User;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "recruitments")
@@ -48,4 +49,10 @@ public class Recruitment extends BaseEntity {
 
    @Column(nullable = false)
    private boolean closing = false;
+
+   @OneToMany(mappedBy = "recruitment", cascade = CascadeType.ALL, orphanRemoval = true)
+   private List<RecruitmentPosition> positions;
+
+   @OneToMany(mappedBy = "recruitment", cascade = CascadeType.ALL, orphanRemoval = true)
+   private List<RecruitmentTechStack> techStacks;
 }
