@@ -21,6 +21,7 @@ public class RecruitmentsController {
     @Autowired
     private RecruitmentService recruitmentService;
 
+    // 모집글 생성
     @PostMapping
     public ResponseEntity<?> createRecruitment(@RequestBody RecruitmentCreateDto dto) {
         try {
@@ -30,11 +31,15 @@ public class RecruitmentsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "생성 실패"));
         }
     }
+
+    // 모집글 전체 조회
     @GetMapping
     public ResponseEntity<List<RecruitmentListDto>> getAllRecruitments() {
         List<RecruitmentListDto> recruitments = recruitmentService.getAllRecruitments();
         return ResponseEntity.ok(recruitments);
     }
+
+    // 모집글 상세 조회
     @GetMapping("/{recruitmentId}")
     public ResponseEntity<RecruitmentDetailDto> getRecruitmentById(@PathVariable Long recruitmentId) {
         return recruitmentService.getRecruitmentById(recruitmentId)
@@ -42,9 +47,19 @@ public class RecruitmentsController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // 모집글 수정
     @PatchMapping("/{recruitmentId}")
-    public ResponseEntity<Recruitment> updateRecruitment(@PathVariable Long recruitmentId, @RequestBody RecruitmentUpdateDto dto) {
+    public ResponseEntity<String> updateRecruitment(@PathVariable Long recruitmentId, @RequestBody RecruitmentUpdateDto dto) {
         Recruitment updatedRecruitment = recruitmentService.updateRecruitment(recruitmentId, dto);
-        return ResponseEntity.ok(updatedRecruitment);
+        String responseMessage = "수정 완료: " + updatedRecruitment.getId();  // ID를 포함하는 메시지 생성
+        return ResponseEntity.ok(responseMessage);  // 메시지 반환
     }
+
+    // 모집글 삭제
+    @DeleteMapping("/{recruitmentId}")
+    public ResponseEntity<?> deleteRecruitment(@PathVariable Long recruitmentId) {
+        recruitmentService.deleteRecruitment(recruitmentId);
+        return ResponseEntity.noContent().build();  // 204 No Content response
+    }
+
 }
