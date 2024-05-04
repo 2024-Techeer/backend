@@ -7,6 +7,7 @@ import com.example.Backend.domain.common.repositories.TechStackRepository;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentCreateDto;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentDetailDto;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentListDto;
+import com.example.Backend.domain.recruitments.dtos.RecruitmentUpdateDto;
 import com.example.Backend.domain.recruitments.entities.Recruitment;
 import com.example.Backend.domain.recruitments.entities.RecruitmentPosition;
 import com.example.Backend.domain.recruitments.entities.RecruitmentTechStack;
@@ -21,8 +22,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,7 +62,6 @@ public class RecruitmentService {
         recruitment.setStartDate(dto.getStartDate());
         recruitment.setEndDate(dto.getEndDate());
         recruitment.setDeadline(dto.getDeadline());
-        recruitment.setClosing(dto.isClosing());
         recruitment.setUser(user);  // 사용자 연결
 
         recruitmentRepository.save(recruitment);
@@ -138,6 +140,99 @@ public class RecruitmentService {
             dto.setTechStacks(techStackNames);
 
             return dto;
+        });
+    }
+
+    public Recruitment updateRecruitment(Long recruitmentId, RecruitmentUpdateDto dto) {
+        Recruitment recruitment = recruitmentRepository.findById(recruitmentId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모집글입니다."));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName(); // 유저의 이메일 추출
+        User user = userRepository.findByEmail(userEmail); // 유저의 이메일을 기준으로 User 인스턴스 추출
+
+        if(!recruitment.getUser().equals(user)) {
+            throw new IllegalStateException("수정 권한이 없는 모집글입니다.");
+        }
+
+        if(dto.getType() != null) {
+            recruitment.setType(dto.getType());
+        }
+        if(dto.getTitle() != null) {
+            recruitment.setTitle(dto.getTitle());
+        }
+        if(dto.getNumber() != null) {
+            recruitment.setNumber(dto.getNumber());
+        }
+        if(dto.getStartDate() != null) {
+            recruitment.setStartDate(dto.getStartDate());
+        }
+        if(dto.getEndDate() != null) {
+            recruitment.setEndDate(dto.getEndDate());
+        }
+        if(dto.getDeadline() != null) {
+            recruitment.setDeadline(dto.getDeadline());
+        }
+        if(dto.getClosing() != null) {
+            recruitment.setClosing(dto.getClosing());
+        }
+
+        if(dto.getPositionIds() != null) {
+            updateRecruitmentPositions(recruitment, dto.getPositionIds());
+        }
+
+        if(dto.getTechStackIds() != null) {
+            updateRecruitmentTechStacks(recruitment, dto.getTechStackIds());
+        }
+
+        return recruitmentRepository.save(recruitment);
+    }
+
+    private void updateRecruitmentPositions(Recruitment recruitment, List<Long> newPositionIds) {
+        List<RecruitmentPosition> existingPositions = recruitmentPositionRepository.findByRecruitment(recruitment);
+        Set<Long> existingPositionIds = existingPositions.stream()
+                .map(rp -> rp.getPosition().getId())
+                .collect(Collectors.toSet());
+
+        // 원래 존재하던 포지션이 새로운 포지션 목록엔 없으면 삭제
+        Set<Long> newPositionIdSet = new HashSet<>(newPositionIds);
+        existingPositions.forEach(rp -> {
+            if(!newPositionIdSet.contains(rp.getPosition().getId())) {
+                recruitmentPositionRepository.delete(rp);
+            }
+        });
+
+        // 원래 존재하던 포지션에 없던 새로운 포지션 목록이면 추가
+        newPositionIdSet.forEach(id -> {
+            if(!existingPositionIds.contains(id)) {
+                Position position = positionRepository.findById(id).orElseThrow(
+                        () -> new IllegalArgumentException("존재하지 않는 Position의 아이디입니다: " + id));
+                        recruitmentPositionRepository.save(new RecruitmentPosition(null, recruitment, position));
+            }
+        });
+    }
+
+    private void updateRecruitmentTechStacks(Recruitment recruitment, List<Long> newTechStackIds) {
+        List<RecruitmentTechStack> existingTechStacks = recruitmentTechStackRepository.findByRecruitment(recruitment);
+        Set<Long> existingTechStackIds = existingTechStacks.stream()
+                .map(rt -> rt.getTechStack().getId())
+                .collect(Collectors.toSet());
+
+        Set<Long> newTechStackIdSet = new HashSet<>(newTechStackIds);
+        // 원래 존재하던 기술스택이 새로운 기술스택 목록엔 없으면 삭제
+        existingTechStacks.forEach(rt -> {
+            if (!newTechStackIdSet.contains(rt.getTechStack().getId())) {
+                recruitmentTechStackRepository.delete(rt);
+            }
+        });
+
+        // 원래 존재하던 기술스택에 없던 새로운 기술스택 목록이면 추가
+        newTechStackIdSet.forEach(id -> {
+            if (!existingTechStackIds.contains(id)) {
+                TechStack techStack = techStackRepository.findById(id).orElseThrow(
+                        () -> new IllegalArgumentException("존재하지 않는 TechStack의 아이디입니다: " + id));
+                recruitmentTechStackRepository.save(new RecruitmentTechStack(null, recruitment, techStack));
+            }
         });
     }
 
