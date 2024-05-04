@@ -49,6 +49,7 @@ public class RecruitmentService {
     @Autowired
     private RecruitmentTechStackRepository recruitmentTechStackRepository;
 
+    // 모집글 생성 메소드
     @Transactional
     public Recruitment createRecruitment(RecruitmentCreateDto dto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -83,6 +84,7 @@ public class RecruitmentService {
         return recruitment;
     }
 
+    // 모집글 전체 조회 메소드
     public List<RecruitmentListDto> getAllRecruitments() {
         return recruitmentRepository.findAll().stream().map(recruitment -> {
             RecruitmentListDto dto = new RecruitmentListDto();
@@ -112,6 +114,7 @@ public class RecruitmentService {
         }).collect(Collectors.toList());
     }
 
+    // 모집글 상세 조회 메소드
     public Optional<RecruitmentDetailDto> getRecruitmentById(Long id) {
         return recruitmentRepository.findById(id).map(recruitment -> {
             RecruitmentDetailDto dto = new RecruitmentDetailDto();
@@ -143,6 +146,7 @@ public class RecruitmentService {
         });
     }
 
+    // 모집글 수정 메소드
     public Recruitment updateRecruitment(Long recruitmentId, RecruitmentUpdateDto dto) {
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모집글입니다."));
@@ -188,6 +192,7 @@ public class RecruitmentService {
         return recruitmentRepository.save(recruitment);
     }
 
+    // 모집글 포지션 수정 메소드
     private void updateRecruitmentPositions(Recruitment recruitment, List<Long> newPositionIds) {
         List<RecruitmentPosition> existingPositions = recruitmentPositionRepository.findByRecruitment(recruitment);
         Set<Long> existingPositionIds = existingPositions.stream()
@@ -212,6 +217,7 @@ public class RecruitmentService {
         });
     }
 
+    // 모집글 기술스택 수정 메소드
     private void updateRecruitmentTechStacks(Recruitment recruitment, List<Long> newTechStackIds) {
         List<RecruitmentTechStack> existingTechStacks = recruitmentTechStackRepository.findByRecruitment(recruitment);
         Set<Long> existingTechStackIds = existingTechStacks.stream()
@@ -234,6 +240,22 @@ public class RecruitmentService {
                 recruitmentTechStackRepository.save(new RecruitmentTechStack(null, recruitment, techStack));
             }
         });
+    }
+
+    // 모집글 삭제 메소드
+    @Transactional
+    public void deleteRecruitment(Long recruitmentId) {
+        Recruitment recruitment = recruitmentRepository.findById(recruitmentId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글입니다: " + recruitmentId));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName(); // 유저의 이메일 추출
+        User user = userRepository.findByEmail(userEmail); // 유저의 이메일을 기준으로 User 인스턴스 추출
+
+        if(!recruitment.getUser().equals(user)) {
+            throw new IllegalStateException("삭제 권한이 없는 모집글입니다.");
+        }
+        recruitmentRepository.delete(recruitment);
     }
 
 
