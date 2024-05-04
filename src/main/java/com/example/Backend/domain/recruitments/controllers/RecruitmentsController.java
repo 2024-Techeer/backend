@@ -3,6 +3,7 @@ package com.example.Backend.domain.recruitments.controllers;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentCreateDto;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentDetailDto;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentListDto;
+import com.example.Backend.domain.recruitments.dtos.RecruitmentUpdateDto;
 import com.example.Backend.domain.recruitments.entities.Recruitment;
 import com.example.Backend.domain.recruitments.services.RecruitmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,11 @@ public class RecruitmentsController {
         return recruitmentService.getRecruitmentById(recruitmentId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping("/{recruitmentId}")
+    public ResponseEntity<Recruitment> updateRecruitment(@PathVariable Long recruitmentId, @RequestBody RecruitmentUpdateDto dto) {
+        Recruitment updatedRecruitment = recruitmentService.updateRecruitment(recruitmentId, dto);
+        return ResponseEntity.ok(updatedRecruitment);
     }
 }
