@@ -12,11 +12,11 @@ public class RecruitmentListDto {
     private Long id;
     private String title;
     private String type;
-    private int number;
+    private Integer number;
     private Date startDate;
     private Date endDate;
     private Date deadline;
-    private boolean closing;
+    private Boolean closing;
     private List<String> positions;
     private List<String> techStacks;
     private Long userId;
