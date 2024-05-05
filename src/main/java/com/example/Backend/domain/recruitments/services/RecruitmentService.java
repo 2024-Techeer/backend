@@ -19,6 +19,7 @@ import com.example.Backend.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +55,8 @@ public class RecruitmentService {
     public Recruitment createRecruitment(RecruitmentCreateDto dto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName(); // 유저의 이메일 추출
-        User user = userRepository.findByEmail(userEmail); // 유저의 이메일을 기준으로 User 인스턴스 추출
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userEmail)); // 유저의 이메일을 기준으로 User 인스턴스 추출
 
         Recruitment recruitment = new Recruitment();
         recruitment.setType(dto.getType());
@@ -153,7 +155,8 @@ public class RecruitmentService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName(); // 유저의 이메일 추출
-        User user = userRepository.findByEmail(userEmail); // 유저의 이메일을 기준으로 User 인스턴스 추출
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userEmail)); // 유저의 이메일을 기준으로 User 인스턴스 추출
 
         if(!recruitment.getUser().equals(user)) {
             throw new IllegalStateException("수정 권한이 없는 모집글입니다.");
@@ -250,7 +253,8 @@ public class RecruitmentService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName(); // 유저의 이메일 추출
-        User user = userRepository.findByEmail(userEmail); // 유저의 이메일을 기준으로 User 인스턴스 추출
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userEmail)); // 유저의 이메일을 기준으로 User 인스턴스 추출
 
         if(!recruitment.getUser().equals(user)) {
             throw new IllegalStateException("삭제 권한이 없는 모집글입니다.");
