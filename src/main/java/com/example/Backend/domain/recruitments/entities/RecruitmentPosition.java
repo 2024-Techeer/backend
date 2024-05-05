@@ -27,3 +27,4 @@ public class RecruitmentPosition {
     @JoinColumn(name = "position_id", nullable = false)
     private Position position;
 }
+//Recruitment --- Position 중간테이블
