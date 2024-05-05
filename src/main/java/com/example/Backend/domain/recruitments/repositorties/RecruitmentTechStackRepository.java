@@ -1,0 +1,12 @@
+package com.example.Backend.domain.recruitments.repositorties;
+
+import com.example.Backend.domain.recruitments.entities.Recruitment;
+import com.example.Backend.domain.recruitments.entities.RecruitmentTechStack;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface RecruitmentTechStackRepository extends JpaRepository<RecruitmentTechStack, Long> {
+    List<RecruitmentTechStack> findByRecruitment(Recruitment recruitment);
+
+}
