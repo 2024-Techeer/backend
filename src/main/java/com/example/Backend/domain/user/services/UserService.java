@@ -1,6 +1,8 @@
-package com.example.Backend.domain.user;
+package com.example.Backend.domain.user.services;
 
+import com.example.Backend.domain.user.UserRepository;
 import com.example.Backend.domain.user.dto.UserRegisterDto;
+import com.example.Backend.domain.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

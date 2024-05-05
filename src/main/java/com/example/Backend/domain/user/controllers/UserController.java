@@ -1,12 +1,13 @@
-package com.example.Backend.domain.user;
+package com.example.Backend.domain.user.controllers;
 
+import com.example.Backend.domain.user.services.UserService;
 import com.example.Backend.domain.user.dto.EmailCheckDto;
 import com.example.Backend.domain.user.dto.ResponseDto;
 import com.example.Backend.domain.user.dto.UserLoginDto;
 import com.example.Backend.domain.user.dto.UserRegisterDto;
+import com.example.Backend.domain.user.entity.User;
 import com.example.Backend.global.jwt.TokenProvider;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

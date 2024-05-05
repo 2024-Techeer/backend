@@ -14,7 +14,7 @@ import com.example.Backend.domain.recruitments.entities.RecruitmentTechStack;
 import com.example.Backend.domain.recruitments.repositorties.RecruitmentPositionRepository;
 import com.example.Backend.domain.recruitments.repositorties.RecruitmentRepository;
 import com.example.Backend.domain.recruitments.repositorties.RecruitmentTechStackRepository;
-import com.example.Backend.domain.user.User;
+import com.example.Backend.domain.user.entity.User;
 import com.example.Backend.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
