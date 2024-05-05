@@ -23,3 +23,4 @@ public class UserPosition {
     @JoinColumn(name = "position_id", nullable = false)
     private Position position;
 }
+//User와 Position의 중간 테이블

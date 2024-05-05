@@ -1,6 +1,6 @@
 package com.example.Backend.domain.user.services;
 
-import com.example.Backend.domain.user.UserRepository;
+import com.example.Backend.domain.user.repositories.UserRepository;
 import com.example.Backend.domain.user.dto.UserRegisterDto;
 import com.example.Backend.domain.user.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;

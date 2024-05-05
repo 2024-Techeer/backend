@@ -15,7 +15,7 @@ import com.example.Backend.domain.recruitments.repositorties.RecruitmentPosition
 import com.example.Backend.domain.recruitments.repositorties.RecruitmentRepository;
 import com.example.Backend.domain.recruitments.repositorties.RecruitmentTechStackRepository;
 import com.example.Backend.domain.user.entities.User;
-import com.example.Backend.domain.user.UserRepository;
+import com.example.Backend.domain.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
