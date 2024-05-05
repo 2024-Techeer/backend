@@ -5,7 +5,7 @@ import com.example.Backend.domain.user.dto.EmailCheckDto;
 import com.example.Backend.domain.user.dto.ResponseDto;
 import com.example.Backend.domain.user.dto.UserLoginDto;
 import com.example.Backend.domain.user.dto.UserRegisterDto;
-import com.example.Backend.domain.user.entity.User;
+import com.example.Backend.domain.user.entities.User;
 import com.example.Backend.global.jwt.TokenProvider;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

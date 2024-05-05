@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.example.Backend.domain.user.entity.User;
+import com.example.Backend.domain.user.entities.User;
 
 import java.util.Date;
 import java.util.List;
