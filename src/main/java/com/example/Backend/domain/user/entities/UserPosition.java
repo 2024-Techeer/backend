@@ -2,13 +2,16 @@ package com.example.Backend.domain.user.entities;
 
 import com.example.Backend.domain.common.entities.Position;
 import jakarta.persistence.*;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "user_positions")
 public class UserPosition {
     @Id

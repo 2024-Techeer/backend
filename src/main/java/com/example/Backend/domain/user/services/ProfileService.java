@@ -52,12 +52,12 @@ public class ProfileService {
         //모집글 - 기술분야 인스턴스들 생성
         List<Position> positions = positionRepository.findAllById(profileDto.getPositionIds());
         for (Position position : positions) {
-            UserPosition userPosition = new UserPosition();
+            UserPosition userPosition = new UserPosition(null,user,position);
             userPositionRepository.save(userPosition);
         }
         List<TechStack> techStacks= techStackRepository.findAllById(profileDto.getTechStackIds());
         for (TechStack techStack : techStacks) {
-            UserTechStack userTechStack = new UserTechStack();
+            UserTechStack userTechStack = new UserTechStack(null,user,techStack);
             userTechStackRepository.save(userTechStack);
         }
         return user;
