@@ -10,10 +10,11 @@ import lombok.*;
 
 @Entity
 @Table(name = "users")// @Document로 MongoDB 컬렉션과 매핑됨.
-@Getter
 @Builder//사용자 정의 생성자가 있으면 안됨.
 @NoArgsConstructor // 기본 생성자를 생성
 @AllArgsConstructor // 모든 필드를 포함한 생성자를 생성
+@Setter
+@Getter
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
