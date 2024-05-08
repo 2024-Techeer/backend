@@ -26,7 +26,7 @@ public class ProfileController {
     @PostMapping
     public ResponseEntity<?> createProfile(@RequestBody ProfileDto profileDto){
         try{
-            User user =  profileservice.createProfile(profileDto);
+            User user =  profileservice.createProfile(profileDto);//실제 로직은 모두 service단에서 구현
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", user.getId()));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "생성 실패"));
