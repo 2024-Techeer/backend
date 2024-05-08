@@ -1,4 +1,4 @@
-package com.example.Backend.domain.user;
+package com.example.Backend.domain.user.entities;
 
 import com.example.Backend.domain.common.entities.BaseEntity;
 import jakarta.persistence.*;
@@ -10,10 +10,11 @@ import lombok.*;
 
 @Entity
 @Table(name = "users")// @Document로 MongoDB 컬렉션과 매핑됨.
-@Getter
 @Builder//사용자 정의 생성자가 있으면 안됨.
 @NoArgsConstructor // 기본 생성자를 생성
 @AllArgsConstructor // 모든 필드를 포함한 생성자를 생성
+@Setter
+@Getter
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,14 @@ public class User extends BaseEntity {
     private String email;
     @Column(nullable = false)
     private String password;
+
+
+    private String photo;
+    private String gender;
+    private String intro;
+    private String residence;
+    private String status;
+
 
 }
 //MongoDB에서는 스키마가 고정되어 있지 않기 때문에, @Field 어노테이션과 같은 수단을 사용하여 필드 레벨에서 직접 not null 제약 조건을 적용할 수는 없습니다
