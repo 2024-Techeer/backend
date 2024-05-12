@@ -1,8 +1,15 @@
 package com.example.Backend.domain.recruitments.services;
 
+import com.example.Backend.domain.recruitments.dtos.ApplicationReadDto;
+import com.example.Backend.domain.recruitments.dtos.OptionReadDto;
+import com.example.Backend.domain.recruitments.dtos.QuestionReadDto;
 import com.example.Backend.domain.recruitments.entities.Application;
+import com.example.Backend.domain.recruitments.entities.Option;
+import com.example.Backend.domain.recruitments.entities.Question;
 import com.example.Backend.domain.recruitments.entities.Recruitment;
 import com.example.Backend.domain.recruitments.repositorties.ApplicationRepository;
+import com.example.Backend.domain.recruitments.repositorties.OptionRepository;
+import com.example.Backend.domain.recruitments.repositorties.QuestionRepository;
 import com.example.Backend.domain.recruitments.repositorties.RecruitmentRepository;
 import com.example.Backend.domain.user.User;
 import com.example.Backend.domain.user.UserRepository;
@@ -11,8 +18,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ApplicationService {
@@ -23,6 +34,10 @@ public class ApplicationService {
     private RecruitmentRepository recruitmentRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private QuestionRepository questionRepository;
+    @Autowired
+    private OptionRepository optionRepository;
 
     public Application createApplication(Long recruitmentId) {
         Application application = new Application();
@@ -43,5 +58,47 @@ public class ApplicationService {
         application = applicationRepository.save(application);
         return application;
     }
+
+    @Transactional(readOnly = true)
+    public Optional<ApplicationReadDto> getApplication(Long recruitmentId) {
+        return applicationRepository.findByRecruitmentId(recruitmentId)
+                .map(this::convertToApplicatoinReadDto);
+    }
+
+    private ApplicationReadDto convertToApplicatoinReadDto(Application application) {
+        ApplicationReadDto dto = new ApplicationReadDto();
+        dto.setApplicatoinId(application.getId());
+
+        List<Question> questions = questionRepository.findByApplication(application);
+        dto.setQuestions(questions.stream()
+                .map(this::convertToQuestionReadDto)
+                .collect(Collectors.toList()));
+        return dto;
+    }
+
+    private QuestionReadDto convertToQuestionReadDto(Question question) {
+        QuestionReadDto dto = new QuestionReadDto();
+        dto.setQuestionId(question.getId());
+        dto.setTitle(question.getTitle());
+        dto.setType(question.getType());
+
+        if(question.getType().equals("multiple")) {
+            List<Option> options = optionRepository.findByQuestion(question);
+            dto.setOptions(options.stream()
+                    .map(this::convertToOptionReadDto)
+                    .collect(Collectors.toList()));
+        }
+        return dto;
+    }
+
+    private OptionReadDto convertToOptionReadDto(Option option) {
+        OptionReadDto dto = new OptionReadDto();
+        dto.setOptoinId(option.getId());
+        dto.setContent(option.getContent());
+        return dto;
+    }
+
+
+
 
 }
