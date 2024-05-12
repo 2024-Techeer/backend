@@ -1,10 +1,16 @@
 package com.example.Backend.domain.recruitments.services;
 
+import com.example.Backend.domain.recruitments.dtos.AnswerReadDto;
+import com.example.Backend.domain.recruitments.dtos.ChoiceReadDto;
+import com.example.Backend.domain.recruitments.dtos.SubmissionDetailDto;
 import com.example.Backend.domain.recruitments.dtos.SubmissionReadDto;
+import com.example.Backend.domain.recruitments.entities.Answer;
 import com.example.Backend.domain.recruitments.entities.Application;
+import com.example.Backend.domain.recruitments.entities.Choice;
 import com.example.Backend.domain.recruitments.entities.Submission;
 import com.example.Backend.domain.recruitments.repositorties.AnswerRepository;
 import com.example.Backend.domain.recruitments.repositorties.ApplicationRepository;
+import com.example.Backend.domain.recruitments.repositorties.ChoiceRepository;
 import com.example.Backend.domain.recruitments.repositorties.SubmissionRepository;
 import com.example.Backend.domain.user.User;
 import com.example.Backend.domain.user.UserRepository;
@@ -13,8 +19,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SubmissionService {
@@ -26,7 +35,10 @@ public class SubmissionService {
     private UserRepository userRepository;
     @Autowired
     private AnswerRepository answerRepository;
+    @Autowired
+    private ChoiceRepository choiceRepository;
 
+    // 제출서 생성
     public Submission createSubmission(Long applicationId) {
         Submission submission = new Submission();
 
@@ -44,6 +56,77 @@ public class SubmissionService {
         return submissionRepository.save(submission);
 
     }
+
+    // 제출서 전체 조회
+    @Transactional(readOnly = true)
+    public SubmissionReadDto getSubmissions(Long applicationId) {
+        List<Submission> submissions = submissionRepository.findByApplicationId(applicationId);
+        SubmissionReadDto dto = new SubmissionReadDto();
+
+        dto.setSubmissionIds(submissions.stream()
+                .map(Submission::getId)
+                .collect(Collectors.toList()));
+
+        dto.setUserIds(submissions.stream()
+                .map(submission -> submission.getUser().getId()).collect(Collectors.toList()));
+
+        dto.setUserNames(submissions.stream()
+                .map(submission -> submission.getUser().getName()).collect(Collectors.toList()));
+
+        return dto;
+
+    }
+
+    /********** 제출서 상세 조회 start **********/
+    @Transactional(readOnly = true)
+    public Optional<SubmissionDetailDto> getSubmission(Long submissionId) {
+        return submissionRepository.findById(submissionId)
+                .map(this::convertToSubmissionDto);
+    }
+
+    // 제출서 인스턴스를 해당 dto로 변환
+    private SubmissionDetailDto convertToSubmissionDto(Submission submission) {
+        SubmissionDetailDto dto = new SubmissionDetailDto();
+        dto.setUserId(submission.getUser().getId());
+        dto.setStatus(submission.getStatus());
+
+        List<Answer> answers = answerRepository.findBySubmissionId(submission.getId());
+        dto.setAnswers(answers.stream()
+                .map(this::convertToAnswerReadDto)
+                .collect(Collectors.toList()));
+
+        return dto;
+    }
+
+    // 답변 인스턴스를 해당 dto로 변환
+    private AnswerReadDto convertToAnswerReadDto(Answer answer) {
+        AnswerReadDto dto = new AnswerReadDto();
+        dto.setQuestionId(answer.getQuestion().getId());
+
+        if(answer.getQuestion().getType().equals("multiple")) {
+            List<Choice> choices = choiceRepository.findByAnswer(answer);
+            dto.setChoices(choices.stream()
+                    .map(this::convertToChoiceReadDto)
+                    .collect(Collectors.toList()));
+            return dto;
+        }
+        else {
+            dto.setContent(answer.getContent());
+            return dto;
+        }
+    }
+
+    // 선택 인스턴스를 해당 dto로 변환
+    private ChoiceReadDto convertToChoiceReadDto(Choice choice) {
+        ChoiceReadDto dto = new ChoiceReadDto();
+        dto.setOptionId(choice.getOption().getId());
+
+        return dto;
+    }
+
+
+    /********** 제출서 상세 조회 end **********/
+
 
 
 }
