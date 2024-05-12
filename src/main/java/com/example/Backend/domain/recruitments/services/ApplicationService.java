@@ -59,12 +59,15 @@ public class ApplicationService {
         return application;
     }
 
+    /********** 신청서 조회 start **********/
+    // 신청서 조회
     @Transactional(readOnly = true)
     public Optional<ApplicationReadDto> getApplication(Long recruitmentId) {
         return applicationRepository.findByRecruitmentId(recruitmentId)
                 .map(this::convertToApplicatoinReadDto);
     }
 
+    // 신청서 인스턴스를 해당 dto로 변환
     private ApplicationReadDto convertToApplicatoinReadDto(Application application) {
         ApplicationReadDto dto = new ApplicationReadDto();
         dto.setApplicatoinId(application.getId());
@@ -76,6 +79,7 @@ public class ApplicationService {
         return dto;
     }
 
+    // 질문 인스턴스를 해당 dto로 변환
     private QuestionReadDto convertToQuestionReadDto(Question question) {
         QuestionReadDto dto = new QuestionReadDto();
         dto.setQuestionId(question.getId());
@@ -91,13 +95,14 @@ public class ApplicationService {
         return dto;
     }
 
+    // 선택지 인스턴스를 해당 dto로 변환
     private OptionReadDto convertToOptionReadDto(Option option) {
         OptionReadDto dto = new OptionReadDto();
         dto.setOptoinId(option.getId());
         dto.setContent(option.getContent());
         return dto;
     }
-
+    /********** 신청서 조회 end **********/
 
 
 
