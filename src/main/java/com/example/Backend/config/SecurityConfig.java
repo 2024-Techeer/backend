@@ -49,8 +49,11 @@ public class SecurityConfig  {//WebSecurityConfigurerAdapter 클래스가 Spring
                         .accessDeniedHandler(jwtAccessDeniedHandler)
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .authorizeHttpRequests(authorizeHttpReqeuests -> authorizeHttpReqeuests
-
-                        .requestMatchers("/api/v1/hello","/api/v1/auth/register","/api/v1/auth/login","/api/v1/auth/check", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                        // 모든 '/api/v1/auth/*' 경로에 대해 접근 허용
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        // Swagger 관련 리소스에 대한 접근 허용
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                        // 그 외 모든 요청은 인증 요구
                         .anyRequest().authenticated()
                 )
 
