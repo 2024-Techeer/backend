@@ -26,5 +26,12 @@ public class ApplicationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", application.getId()));
     }
 
+    // 신청서 조회
+    @GetMapping
+    public ResponseEntity<ApplicationReadDto> getApplication(@PathVariable Long recruitmentId) {
+        return applicationService.getApplication(recruitmentId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
 }
