@@ -7,7 +7,7 @@ import com.example.Backend.domain.common.repositories.TechStackRepository;
 import com.example.Backend.domain.recruitments.RecruitmentSpecifications;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentCreateDto;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentDetailDto;
-import com.example.Backend.domain.recruitments.dtos.RecruitmentListDto;
+import com.example.Backend.domain.recruitments.dtos.RecruitmentReadDto;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentUpdateDto;
 import com.example.Backend.domain.recruitments.entities.Recruitment;
 import com.example.Backend.domain.recruitments.entities.RecruitmentPosition;
@@ -117,6 +117,7 @@ public class RecruitmentService {
 //            return dto;
 //        }).collect(Collectors.toList());
 //    }
+
 
     // 모집글 상세 조회 메소드
     public Optional<RecruitmentDetailDto> getRecruitmentById(Long id) {

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class RecruitmentListDto {
+public class RecruitmentReadDto {
     private Long id;
     private String title;
     private String type;
