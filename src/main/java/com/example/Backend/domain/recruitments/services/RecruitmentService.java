@@ -311,5 +311,23 @@ public class RecruitmentService {
         recruitmentRepository.delete(recruitment);
     }
 
+    // 모집글 마감 메소드
+    public void closeRecruitment(Long recruitmentId) {
+        Recruitment recruitment = recruitmentRepository.findById(recruitmentId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글입니다: " + recruitmentId));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName(); // 유저의 이메일 추출
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userEmail)); // 유저의 이메일을 기준으로 User 인스턴스 추출
+
+        if(!recruitment.getUser().equals(user)) {
+            throw new IllegalStateException("마감 권한이 없는 모집글입니다.");
+        }
+
+        recruitment.setClosing(true);
+        recruitmentRepository.save(recruitment);
+    }
+
 
 }

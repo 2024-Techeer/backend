@@ -128,5 +128,29 @@ public class SubmissionService {
     /********** 제출서 상세 조회 end **********/
 
 
+    // 제출서 수락
+    public void acceptSubmission(Long submissionId) {
+        Submission submission = submissionRepository.findById(submissionId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 제출서입니다: " + submissionId));
 
+        /**************
+         추후 이 자리에 보안 로직 추가..
+         **************/
+
+        submission.setStatus("accepted");
+        submissionRepository.save(submission);
+    }
+
+    // 제출서 거절
+    public void rejectSubmission(Long submissionId) {
+        Submission submission = submissionRepository.findById(submissionId)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 제출서입니다: " + submissionId));
+
+        /**************
+         추후 이 자리에 보안 로직 추가..
+         **************/
+
+        submission.setStatus("rejected");
+        submissionRepository.save(submission);
+    }
 }

@@ -34,10 +34,27 @@ public class SubmissionController {
         return ResponseEntity.ok(submissionDto); // 200 OK 응답과 함께 DTO 반환
     }
 
+    // 제출서 상세 조회
     @GetMapping("/{submissionId}")
     public ResponseEntity<SubmissionDetailDto> getSubmission(@PathVariable Long submissionId) {
         return submissionService.getSubmission(submissionId)
                 .map(submissionDetailDto -> ResponseEntity.ok(submissionDetailDto))  // 200 OK with data
                 .orElseGet(() -> ResponseEntity.notFound().build());  // 404 Not Found if empty
+    }
+
+    // 제출서 수락
+    @PatchMapping("/{submissionId}/accepting")
+    public ResponseEntity<String> acceptSubmission(@PathVariable Long submissionId) {
+        submissionService.acceptSubmission(submissionId);
+        String responseMessage = "수락 완료: " + submissionId;
+        return ResponseEntity.ok(responseMessage);
+    }
+
+    // 제출서 거절
+    @PatchMapping("/{submissionId}/rejecting")
+    public ResponseEntity<String> rejectSubmission(@PathVariable Long submissionId) {
+        submissionService.rejectSubmission(submissionId);
+        String responseMessage = "거절 완료: " + submissionId;
+        return ResponseEntity.ok(responseMessage);
     }
 }
