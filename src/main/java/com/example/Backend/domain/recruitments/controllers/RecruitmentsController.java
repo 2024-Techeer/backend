@@ -2,7 +2,7 @@ package com.example.Backend.domain.recruitments.controllers;
 
 import com.example.Backend.domain.recruitments.dtos.RecruitmentCreateDto;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentDetailDto;
-import com.example.Backend.domain.recruitments.dtos.RecruitmentListDto;
+import com.example.Backend.domain.recruitments.dtos.RecruitmentReadDto;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentUpdateDto;
 import com.example.Backend.domain.recruitments.entities.Recruitment;
 import com.example.Backend.domain.recruitments.services.RecruitmentService;
@@ -34,8 +34,8 @@ public class RecruitmentsController {
 
     // 모집글 전체 조회
     @GetMapping
-    public ResponseEntity<List<RecruitmentListDto>> getAllRecruitments() {
-        List<RecruitmentListDto> recruitments = recruitmentService.getAllRecruitments();
+    public ResponseEntity<List<RecruitmentReadDto>> getAllRecruitments() {
+        List<RecruitmentReadDto> recruitments = recruitmentService.getAllRecruitments();
         return ResponseEntity.ok(recruitments);
     }
 

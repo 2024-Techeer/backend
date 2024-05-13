@@ -6,7 +6,7 @@ import com.example.Backend.domain.common.repositories.PositionRepository;
 import com.example.Backend.domain.common.repositories.TechStackRepository;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentCreateDto;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentDetailDto;
-import com.example.Backend.domain.recruitments.dtos.RecruitmentListDto;
+import com.example.Backend.domain.recruitments.dtos.RecruitmentReadDto;
 import com.example.Backend.domain.recruitments.dtos.RecruitmentUpdateDto;
 import com.example.Backend.domain.recruitments.entities.Recruitment;
 import com.example.Backend.domain.recruitments.entities.RecruitmentPosition;
@@ -87,9 +87,9 @@ public class RecruitmentService {
     }
 
     // 모집글 전체 조회 메소드
-    public List<RecruitmentListDto> getAllRecruitments() {
+    public List<RecruitmentReadDto> getAllRecruitments() {
         return recruitmentRepository.findAll().stream().map(recruitment -> {
-            RecruitmentListDto dto = new RecruitmentListDto();
+            RecruitmentReadDto dto = new RecruitmentReadDto();
             dto.setId(recruitment.getId());
             dto.setTitle(recruitment.getTitle());
             dto.setType(recruitment.getType());
