@@ -35,12 +35,12 @@ public class RecruitmentsController {
 
     // 모집글 전체 조회
     @GetMapping
-    public ResponseEntity<List<RecruitmentListDto>> getAllRecruitments(
+    public ResponseEntity<List<RecruitmentReadDto>> getAllRecruitments(
             @RequestParam(required = false) String type,
             @RequestParam(required = false) Long positionId,
             @RequestParam(required = false) Long techStackId) {
 
-        List<RecruitmentListDto> recruitments = recruitmentService.filterRecruitments(type, positionId, techStackId);
+        List<RecruitmentReadDto> recruitments = recruitmentService.filterRecruitments(type, positionId, techStackId);
 
         // 결과가 비어있는지 확인 후 적절한 상태 코드와 함께 반환
         if (recruitments.isEmpty()) {

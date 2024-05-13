@@ -152,7 +152,7 @@ public class RecruitmentService {
     }
 
     //모집글 필터링 조회 (type, positionId, techStackId)
-    public List<RecruitmentListDto> filterRecruitments(String type, Long positionId, Long techStackId) {
+    public List<RecruitmentReadDto> filterRecruitments(String type, Long positionId, Long techStackId) {
         Specification<Recruitment> spec = Specification.where(null);
 
         if(type!=null){
@@ -165,12 +165,12 @@ public class RecruitmentService {
             spec= spec.and(RecruitmentSpecifications.hasTechStack(techStackId));
         }
         return recruitmentRepository.findAll(spec).stream()
-                .map(this::convertToRecruitmentListDto)
+                .map(this::convertToRecruitmentReadDto)
                 .collect(Collectors.toList());
     }
 
-    private RecruitmentListDto convertToRecruitmentListDto(Recruitment recruitment) {
-        RecruitmentListDto dto = new RecruitmentListDto();
+    private RecruitmentReadDto convertToRecruitmentReadDto(Recruitment recruitment) {
+        RecruitmentReadDto dto = new RecruitmentReadDto();
         dto.setId(recruitment.getId());
         dto.setType(recruitment.getType());
         dto.setTitle(recruitment.getTitle());

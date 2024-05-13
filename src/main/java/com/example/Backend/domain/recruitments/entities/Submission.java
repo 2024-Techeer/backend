@@ -1,7 +1,7 @@
 package com.example.Backend.domain.recruitments.entities;
 
 import com.example.Backend.domain.common.entities.BaseEntity;
-import com.example.Backend.domain.user.User;
+import com.example.Backend.domain.user.entities.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
