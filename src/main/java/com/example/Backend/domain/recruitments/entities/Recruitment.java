@@ -25,6 +25,7 @@ public class Recruitment extends BaseEntity {
    @JoinColumn(name = "user_id", nullable = false)
    private User user;
 
+   //스터디 or 프로젝트
    @Column(nullable = false)
    private String type;
 

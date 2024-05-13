@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/recruitments")
@@ -34,10 +35,22 @@ public class RecruitmentsController {
 
     // 모집글 전체 조회
     @GetMapping
-    public ResponseEntity<List<RecruitmentReadDto>> getAllRecruitments() {
-        List<RecruitmentReadDto> recruitments = recruitmentService.getAllRecruitments();
-        return ResponseEntity.ok(recruitments);
+    public ResponseEntity<List<RecruitmentListDto>> getAllRecruitments(
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) Long positionId,
+            @RequestParam(required = false) Long techStackId) {
+
+        List<RecruitmentListDto> recruitments = recruitmentService.filterRecruitments(type, positionId, techStackId);
+
+        // 결과가 비어있는지 확인 후 적절한 상태 코드와 함께 반환
+        if (recruitments.isEmpty()) {
+            return ResponseEntity.noContent().build();  // 내용이 없을 경우 No Content 상태 반환
+        } else {
+            return ResponseEntity.ok(recruitments);  // 내용이 있을 경우 OK 상태와 함께 데이터 반환
+        }
     }
+
+
 
     // 모집글 상세 조회
     @GetMapping("/{recruitmentId}")
