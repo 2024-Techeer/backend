@@ -50,8 +50,6 @@ public class RecruitmentsController {
         }
     }
 
-
-
     // 모집글 상세 조회
     @GetMapping("/{recruitmentId}")
     public ResponseEntity<RecruitmentDetailDto> getRecruitmentById(@PathVariable Long recruitmentId) {
@@ -75,4 +73,11 @@ public class RecruitmentsController {
         return ResponseEntity.noContent().build();  // 204 No Content response
     }
 
+    // 모집글 마감
+    @PatchMapping("/{recruitmentId}/closing")
+    public ResponseEntity<String> closeRecruitment(@PathVariable Long recruitmentId) {
+        recruitmentService.closeRecruitment(recruitmentId);
+        String responseMessage = "마감 완료: " + recruitmentId;
+        return ResponseEntity.ok(responseMessage);
+    }
 }
