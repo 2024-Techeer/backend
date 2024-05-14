@@ -76,7 +76,6 @@ public class ProfileService {
         return convertToProfileViewDto(user);
     }
 
-    public ProfileViewDto getProfile(Long userId, Long positionId, Long techStackId){}
     @Transactional
     public User updateProfile(Long userId, ProfileUpdateDto profileUpdateDto){
         User user=userRepository.findById(userId).orElseThrow(()->new UsernameNotFoundException("User not found with id :" +userId));
