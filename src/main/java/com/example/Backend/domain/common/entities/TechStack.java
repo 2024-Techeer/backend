@@ -23,3 +23,4 @@ public class TechStack {
     @Column(nullable = false)
     private String name;
 }
+//왜 안되는거지
