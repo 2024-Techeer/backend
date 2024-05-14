@@ -6,6 +6,8 @@ import com.example.Backend.domain.common.repositories.PositionRepository;
 import com.example.Backend.domain.common.repositories.TechStackRepository;
 import com.example.Backend.domain.recruitments.repositorties.RecruitmentRepository;
 import com.example.Backend.domain.user.dto.ProfileDto;
+import com.example.Backend.domain.user.dto.ProfileUpdateDto;
+import com.example.Backend.domain.user.dto.ProfileViewDto;
 import com.example.Backend.domain.user.entities.User;
 import com.example.Backend.domain.user.entities.UserPosition;
 import com.example.Backend.domain.user.entities.UserTechStack;
@@ -47,6 +49,7 @@ public class ProfileService {
         user.setIntro(profileDto.getIntro());
         user.setResidence(profileDto.getResidence());
         user.setStatus(profileDto.getStatus());
+        user.setGithub(profileDto.getGithub());
         userRepository.save(user);//일단 먼저 저장
 
         //모집글 - 기술분야 인스턴스들 생성
@@ -66,6 +69,44 @@ public class ProfileService {
             userTechStackRepository.save(userTechStack);
         }
         return user;
+    }
+
+    public ProfileViewDto getProfile(Long userId){
+        User user = userRepository.findById(userId).orElseThrow(()->new UsernameNotFoundException("User not found with id :" +userId));
+        return convertToProfileViewDto(user);
+    }
+
+    public ProfileViewDto getProfile(Long userId, Long positionId, Long techStackId){}
+    @Transactional
+    public User updateProfile(Long userId, ProfileUpdateDto profileUpdateDto){
+        User user=userRepository.findById(userId).orElseThrow(()->new UsernameNotFoundException("User not found with id :" +userId));
+
+        updateProfileData(user, profileUpdateDto);
+        userRepository.save(user);
+        return user;
+    }
+
+    public void deleteProfile(Long userId){
+        userRepository.deleteById(userId);
+    }
+    private ProfileViewDto convertToProfileViewDto(User user){
+        ProfileViewDto profileViewDto = new ProfileViewDto();
+        profileViewDto.setPhoto(user.getPhoto());
+        profileViewDto.setGender(user.getGender());
+        profileViewDto.setIntro(user.getIntro());
+        profileViewDto.setResidence(user.getResidence());
+        profileViewDto.setStatus(user.getStatus());
+        profileViewDto.setGithub(user.getGithub());
+        return profileViewDto;
+    }
+
+    private void updateProfileData(User user, ProfileUpdateDto profileUpdateDto){
+        user.setPhoto(profileUpdateDto.getPhoto());
+        user.setGender(profileUpdateDto.getGender());
+        user.setIntro(profileUpdateDto.getIntro());
+        user.setResidence(profileUpdateDto.getResidence());
+        user.setStatus(profileUpdateDto.getStatus());
+        user.setGithub(profileUpdateDto.getGithub());
     }
 }
 /*

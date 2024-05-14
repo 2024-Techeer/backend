@@ -70,6 +70,7 @@ public class UserController {
     }
 
 
+
     @GetMapping("/hello")//test 성공;
         public ResponseEntity<String> hello(){
             return ResponseEntity.ok("hello");

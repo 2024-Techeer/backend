@@ -58,7 +58,24 @@ public class UserService {
         return userRepository.findByEmail(email).isEmpty();
     }
 
+    public User findUserById(Long id){
+        return userRepository.findById(id).orElse(null);
+    }
+    public User updateUser(Long id, UserRegisterDto userDto){
+        return userRepository.findById(id).map(user-> {user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        return userRepository.save(user);
+        }).orElse(null);
 
+    }
+
+    public boolean deleteUser(Long id){
+        if (userRepository.existsById(id)){
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 
 //    public String encodePassword(String password, PasswordEncoder passwordEncoder){
 //        return passwordEncoder.encode(password);
