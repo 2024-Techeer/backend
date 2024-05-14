@@ -26,7 +26,7 @@ public class RecruitmentsController {
     public ResponseEntity<?> createRecruitment(@RequestBody RecruitmentCreateDto dto) {
         try {
             Recruitment recruitment = recruitmentService.createRecruitment(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", recruitment.getId()));
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("recruitmentId", recruitment.getId()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "생성 실패"));
         }

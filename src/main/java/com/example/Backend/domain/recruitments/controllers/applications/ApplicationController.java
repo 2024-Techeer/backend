@@ -21,7 +21,7 @@ public class ApplicationController {
     @PostMapping
     public ResponseEntity<?> createApplication(@PathVariable Long recruitmentId) {
         Application application = applicationService.createApplication(recruitmentId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", application.getId()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("applicationId", application.getId()));
     }
 
     // 신청서 조회

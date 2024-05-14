@@ -8,19 +8,22 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/applications/questions/{questionId}/submissions/{submissionId}/answers")
 public class AnswerController {
     @Autowired
     private AnswerService answerService;
 
+    // 답변 생성
     @PostMapping
-    public ResponseEntity<Answer> createAnswer(@RequestBody AnswerCreateDto dto,
+    public ResponseEntity<?> createAnswer(@RequestBody AnswerCreateDto dto,
                                                @PathVariable Long questionId,
                                                @PathVariable Long submissionId) {
         try {
             Answer answer = answerService.createAnswer(dto, questionId, submissionId);
-            return new ResponseEntity<>(answer, HttpStatus.CREATED);
+            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("answerId", answer.getId()));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(null);
         }

@@ -21,7 +21,7 @@ public class SubmissionController {
     @PostMapping
     public ResponseEntity<?> createSubmission(@PathVariable Long applicationId) {
         Submission submission = submissionService.createSubmission(applicationId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", submission.getId()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("submissionId", submission.getId()));
     }
 
     // 제출서 전체 조회
@@ -38,7 +38,7 @@ public class SubmissionController {
     @GetMapping("/{submissionId}")
     public ResponseEntity<SubmissionDetailDto> getSubmission(@PathVariable Long submissionId) {
         return submissionService.getSubmission(submissionId)
-                .map(submissionDetailDto -> ResponseEntity.ok(submissionDetailDto))  // 200 OK with data
+                .map(ResponseEntity::ok)  // 200 OK with data
                 .orElseGet(() -> ResponseEntity.notFound().build());  // 404 Not Found if empty
     }
 
