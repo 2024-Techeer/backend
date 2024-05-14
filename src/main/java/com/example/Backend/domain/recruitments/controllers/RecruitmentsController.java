@@ -1,11 +1,11 @@
 package com.example.Backend.domain.recruitments.controllers;
 
-import com.example.Backend.domain.recruitments.dtos.RecruitmentCreateDto;
-import com.example.Backend.domain.recruitments.dtos.RecruitmentDetailDto;
-import com.example.Backend.domain.recruitments.dtos.RecruitmentReadDto;
-import com.example.Backend.domain.recruitments.dtos.RecruitmentUpdateDto;
-import com.example.Backend.domain.recruitments.entities.Recruitment;
-import com.example.Backend.domain.recruitments.services.RecruitmentService;
+import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentCreateDto;
+import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentDetailDto;
+import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentReadDto;
+import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentUpdateDto;
+import com.example.Backend.domain.recruitments.entities.recruitments.Recruitment;
+import com.example.Backend.domain.recruitments.services.recruitments.RecruitmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/recruitments")

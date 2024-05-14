@@ -1,14 +1,14 @@
 package com.example.Backend.domain.user.services;
 
 import com.example.Backend.domain.user.repositories.UserRepository;
-import com.example.Backend.domain.user.dto.UserRegisterDto;
+import com.example.Backend.domain.user.dto.users.UserRegisterDto;
 import com.example.Backend.domain.user.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.Backend.domain.user.dto.UserLoginDto;
+import com.example.Backend.domain.user.dto.users.UserLoginDto;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

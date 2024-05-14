@@ -1,9 +1,8 @@
 package com.example.Backend.domain.user.controllers;
 
-import com.example.Backend.domain.user.dto.ProfileDto;
-import com.example.Backend.domain.user.dto.ProfileUpdateDto;
-import com.example.Backend.domain.user.dto.ProfileViewDto;
-import com.example.Backend.domain.user.dto.UserRegisterDto;
+import com.example.Backend.domain.user.dto.profiles.ProfileDto;
+import com.example.Backend.domain.user.dto.profiles.ProfileUpdateDto;
+import com.example.Backend.domain.user.dto.profiles.ProfileViewDto;
 import com.example.Backend.domain.user.entities.User;
 import com.example.Backend.domain.user.services.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
