@@ -1,10 +1,10 @@
 package com.example.Backend.domain.user.controllers;
 
 import com.example.Backend.domain.user.services.UserService;
-import com.example.Backend.domain.user.dto.EmailCheckDto;
+import com.example.Backend.domain.user.dto.users.EmailCheckDto;
 import com.example.Backend.domain.user.dto.ResponseDto;
-import com.example.Backend.domain.user.dto.UserLoginDto;
-import com.example.Backend.domain.user.dto.UserRegisterDto;
+import com.example.Backend.domain.user.dto.users.UserLoginDto;
+import com.example.Backend.domain.user.dto.users.UserRegisterDto;
 import com.example.Backend.domain.user.entities.User;
 import com.example.Backend.global.jwt.TokenProvider;
 import jakarta.validation.Valid;

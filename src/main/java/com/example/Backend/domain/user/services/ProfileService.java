@@ -4,10 +4,9 @@ import com.example.Backend.domain.common.entities.Position;
 import com.example.Backend.domain.common.entities.TechStack;
 import com.example.Backend.domain.common.repositories.PositionRepository;
 import com.example.Backend.domain.common.repositories.TechStackRepository;
-import com.example.Backend.domain.recruitments.repositorties.RecruitmentRepository;
-import com.example.Backend.domain.user.dto.ProfileDto;
-import com.example.Backend.domain.user.dto.ProfileUpdateDto;
-import com.example.Backend.domain.user.dto.ProfileViewDto;
+import com.example.Backend.domain.user.dto.profiles.ProfileDto;
+import com.example.Backend.domain.user.dto.profiles.ProfileUpdateDto;
+import com.example.Backend.domain.user.dto.profiles.ProfileViewDto;
 import com.example.Backend.domain.user.entities.User;
 import com.example.Backend.domain.user.entities.UserPosition;
 import com.example.Backend.domain.user.entities.UserTechStack;
@@ -22,6 +21,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfileService {
@@ -96,6 +96,21 @@ public class ProfileService {
         profileViewDto.setResidence(user.getResidence());
         profileViewDto.setStatus(user.getStatus());
         profileViewDto.setGithub(user.getGithub());
+
+        // Position 이름 추출
+        List<String> positionNames = userPositionRepository.findByUser(user)
+                .stream()
+                .map(recruitmentPosition -> recruitmentPosition.getPosition().getName())
+                .collect(Collectors.toList());
+        profileViewDto.setPositions(positionNames);
+
+        // TechStack 이름 추출
+        List<String> techStackNames = userTechStackRepository.findByUser(user)
+                .stream()
+                .map(recruitmentTechStack -> recruitmentTechStack.getTechStack().getName())
+                .collect(Collectors.toList());
+        profileViewDto.setTechStacks(techStackNames);
+
         return profileViewDto;
     }
 
