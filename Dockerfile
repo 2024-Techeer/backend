@@ -22,4 +22,10 @@ RUN chmod +x ./gradlew
 #gradlew를 통해 실행 가능한 jar파일 생성
 RUN ./gradlew bootJar
 
+# Java 실행 명령 고정
+ENTRYPOINT ["java", "-jar"]
+
+# 기본으로 실행할 JAR 파일 및 기타 매개변수
+CMD ["build/libs/spring-0.0.1-SNAPSHOT.jar"]
+
 
