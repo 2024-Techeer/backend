@@ -22,6 +22,9 @@ RUN chmod +x ./gradlew
 #gradlew를 통해 실행 가능한 jar파일 생성
 RUN ./gradlew bootJar
 
+# JAR 파일 위치 확인
+RUN ls -l /build/libs/
+
 # 최종 이미지
 FROM bellsoft/liberica-openjdk-alpine:17
 
