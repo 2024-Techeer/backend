@@ -22,16 +22,16 @@ RUN chmod +x ./gradlew
 #gradlew를 통해 실행 가능한 jar파일 생성
 RUN ./gradlew bootJar
 
-# JAR 파일 위치 확인
-RUN ls -l /build/libs/
-
 # 최종 이미지
 FROM bellsoft/liberica-openjdk-alpine:17
 
-# builder 스테이지에서 생성된 jar 파일을 현재 이미지로 복사
-COPY --from=builder /home/gradle/build/libs/spring-0.0.1-SNAPSHOT.jar /app/spring-0.0.1-SNAPSHOT.jar
+# build이미지에서 build/libs/*.jar 파일을 app.jar로 복사
+COPY --from=builder build/libs/*.jar app.jar
 
-# Java 실행 명령 고정
-ENTRYPOINT ["java", "-jar", "/app/spring-0.0.1-SNAPSHOT.jar"]
+# jar 파일 실행
+ENTRYPOINT ["java", "-jar", "/app.jar"]
+
+# 볼륨 지정
+VOLUME /tmp
 
 
