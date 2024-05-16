@@ -1,21 +1,25 @@
 # Bellsoft Liberica OpenJDK 17 이미지를 기반으로 설정
-FROM bellsoft/liberica-openjdk-alpine:17
+FROM bellsoft/liberica-openjdk-alpine:17 AS builder
 
-# 작업 디렉토리 설정
-WORKDIR /app
+#gradlew 복사
+COPY gradlew .
 
-# 소스 코드 및 Gradle Wrapper를 컨테이너에 복사
-COPY . /app
+#gradle 복사
+COPY gradle gradle
 
-# gradlew 파일에 실행 권한 부여
+#build.gradle 복사
+COPY build.gradle .
+
+#settings.gradle 복사
+COPY settings.gradle .
+
+#웹어플리케이션 소스 복사
+COPY src src
+
+#gradlew 실행 권한 부여
 RUN chmod +x ./gradlew
 
-# 프로젝트 빌드
-RUN ./gradlew build --no-daemon
+#gradlew를 통해 실행 가능한 jar파일 생성
+RUN ./gradlew bootJar
 
-# Java 실행 명령 고정
-ENTRYPOINT ["java", "-jar"]
-
-# 기본으로 실행할 JAR 파일 및 기타 매개변수
-CMD ["build/libs/spring-0.0.1-SNAPSHOT.jar"]
 
