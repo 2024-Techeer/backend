@@ -19,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,13 +37,22 @@ public class ProfileService {
     @Autowired
     private TechStackRepository techStackRepository;
 
+    @Autowired
+    private StorageService storageService;
+
     //프로필도 USER엔티티에서 가져오는 것. 프로필 테이블이 따로 없음.
     @Transactional
-    public User createProfile(ProfileDto profileDto){
+    public User createProfile(ProfileDto profileDto, MultipartFile photoFile) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();//이메일 반환되는 것.
-        User user=userRepository.findByEmail(userEmail)
-                .orElseThrow(()->new UsernameNotFoundException("User not found with email :" +userEmail));
+        String userEmail = authentication.getName();
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email :" + userEmail));
+
+        // 사진 파일이 있으면 S3에 업로드하고 URL을 설정
+        if (!photoFile.isEmpty()) {
+            String photoUrl = storageService.uploadFile(photoFile);
+            profileDto.setPhoto(photoUrl);
+        }
 
         user.setPhoto(profileDto.getPhoto());
         user.setGender(profileDto.getGender());
