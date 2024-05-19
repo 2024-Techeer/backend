@@ -1,8 +1,12 @@
+package com.example.Backend.domain.user.services;
+
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
+import com.amazonaws.util.IOUtils;
+import com.example.Backend.global.s3.ErrorCode;
+import com.example.Backend.global.s3.S3Exception;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +24,7 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class S3ImageService {
+public class S3ImageService{
 
     private final AmazonS3 amazonS3;
 
