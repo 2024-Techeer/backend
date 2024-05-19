@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -23,7 +24,7 @@ import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
+@Service
 public class S3ImageService{
 
     private final AmazonS3 amazonS3;
@@ -90,22 +91,22 @@ public class S3ImageService{
         return amazonS3.getUrl(bucketName, s3FileName).toString();
     }
 
-    public void deleteImageFromS3(String imageAddress) {
-        String key = getKeyFromImageAddress(imageAddress);
-        try {
-            amazonS3.deleteObject(new DeleteObjectRequest(bucketName, key));
-        } catch (Exception e) {
-            throw new S3Exception(ErrorCode.IO_EXCEPTION_ON_IMAGE_DELETE);
-        }
-    }
-
-    private String getKeyFromImageAddress(String imageAddress) {
-        try {
-            URL url = new URL(imageAddress);
-            String decodingKey = URLDecoder.decode(url.getPath(), StandardCharsets.UTF_8.name());
-            return decodingKey.substring(1); // 맨 앞의 '/' 제거
-        } catch (MalformedURLException | UnsupportedEncodingException e) {
-            throw new S3Exception(ErrorCode.IO_EXCEPTION_ON_IMAGE_DELETE);
-        }
-    }
+//    public void deleteImageFromS3(String imageAddress) {
+//        String key = getKeyFromImageAddress(imageAddress);
+//        try {
+//            amazonS3.deleteObject(new DeleteObjectRequest(bucketName, key));
+//        } catch (Exception e) {
+//            throw new S3Exception(ErrorCode.IO_EXCEPTION_ON_IMAGE_DELETE);
+//        }
+//    }
+//
+//    private String getKeyFromImageAddress(String imageAddress) {
+//        try {
+//            URL url = new URL(imageAddress);
+//            String decodingKey = URLDecoder.decode(url.getPath(), StandardCharsets.UTF_8.name());
+//            return decodingKey.substring(1); // 맨 앞의 '/' 제거
+//        } catch (MalformedURLException | UnsupportedEncodingException e) {
+//            throw new S3Exception(ErrorCode.IO_EXCEPTION_ON_IMAGE_DELETE);
+//        }
+//    }
 }
