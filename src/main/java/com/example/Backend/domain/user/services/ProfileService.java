@@ -38,7 +38,7 @@ public class ProfileService {
     private TechStackRepository techStackRepository;
 
     @Autowired
-    private StorageService storageService;
+    private S3ImageService storageService;
 
     //프로필도 USER엔티티에서 가져오는 것. 프로필 테이블이 따로 없음.
     @Transactional
@@ -51,10 +51,11 @@ public class ProfileService {
         // 사진 파일이 있으면 S3에 업로드하고 URL을 설정
         if (!photoFile.isEmpty()) {
             String photoUrl = storageService.uploadFile(photoFile);
-            profileDto.setPhoto(photoUrl);
+            System.out.println(photoUrl);
+            user.setPhoto(photoUrl);
         }
 
-        user.setPhoto(profileDto.getPhoto());
+
         user.setGender(profileDto.getGender());
         user.setIntro(profileDto.getIntro());
         user.setResidence(profileDto.getResidence());
