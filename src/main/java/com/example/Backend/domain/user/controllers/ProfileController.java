@@ -5,32 +5,37 @@ import com.example.Backend.domain.user.dto.profiles.ProfileUpdateDto;
 import com.example.Backend.domain.user.dto.profiles.ProfileViewDto;
 import com.example.Backend.domain.user.entities.User;
 import com.example.Backend.domain.user.services.ProfileService;
+import com.example.Backend.domain.user.services.S3ImageService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
 @RequestMapping("/api/v1/profiles")
 @RestController
+@RequiredArgsConstructor
 public class ProfileController {
+
+    private  S3ImageService s3ImageService;
+
 
     private final ProfileService profileservice;
 
-    @Autowired
-    public ProfileController(ProfileService profileservice){
-
-        this.profileservice = profileservice;
-    }
-
-    @PostMapping
-    public ResponseEntity<?> createProfile(@RequestBody ProfileDto profileDto){
-        try{
-            User user =  profileservice.createProfile(profileDto);//실제 로직은 모두 service단에서 구현
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createProfile(@RequestPart("profile") ProfileDto profileDto,
+                                           @RequestPart("photo") MultipartFile photo) {
+        System.out.println(photo);
+        System.out.println(profileDto);
+        try {
+            User user = profileservice.createProfile(profileDto, photo);
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", user.getId()));
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "생성 실패"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Profile creation failed"));
         }
     }
 
@@ -64,6 +69,10 @@ public class ProfileController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Failed to delete profile: "+e.getMessage()));
         }
     }
-
+//    @PostMapping("/s3/upload")
+//    public ResponseEntity<?> s3Upload(@RequestPart(value = "image", required = false) MultipartFile image){
+//        String profileImage = s3ImageService.upload(image);
+//        return ResponseEntity.ok(profileImage);
+//    }
 
 }

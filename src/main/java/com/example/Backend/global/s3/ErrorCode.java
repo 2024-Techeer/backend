@@ -1,0 +1,10 @@
+package com.example.Backend.global.s3;
+
+public enum ErrorCode {
+    EMPTY_FILE_EXCEPTION,
+    IO_EXCEPTION_ON_IMAGE_UPLOAD,
+    NO_FILE_EXTENSION,
+    INVALID_FILE_EXTENSION,
+    PUT_OBJECT_EXCEPTION,
+    IO_EXCEPTION_ON_IMAGE_DELETE
+}

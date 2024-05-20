@@ -15,3 +15,4 @@ build/
 /bin/
 /bin/
 /target/
+application-private.properties

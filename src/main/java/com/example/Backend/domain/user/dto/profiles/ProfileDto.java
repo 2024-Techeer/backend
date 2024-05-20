@@ -7,7 +7,6 @@ import java.util.List;
 
 @Data
 public class ProfileDto {
-    private String photo;
     private String gender;
     private String intro;
     private String residence;
