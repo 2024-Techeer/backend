@@ -79,4 +79,18 @@ public class RecruitmentsController {
         String responseMessage = "마감 완료: " + recruitmentId;
         return ResponseEntity.ok(responseMessage);
     }
+
+    // 내가 쓴 모집글 조회
+    @GetMapping("/me")
+    public ResponseEntity<List<RecruitmentReadDto>> getMyRecruitment(){
+        List<RecruitmentReadDto> recruitments = recruitmentService.filterMyRecruitments();
+        return ResponseEntity.ok(recruitments);
+    }
+
+    // 내가 신청한 모집글 조회
+    @GetMapping("/applied")
+    public ResponseEntity<List<RecruitmentReadDto>> getAppliedRecruitment(){
+        List<RecruitmentReadDto> recruitments = recruitmentService.filterAppliedRecruitments();
+        return ResponseEntity.ok(recruitments);
+    }
 }
