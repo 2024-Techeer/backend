@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OptionReadDto {
-    private Long optoinId;
+    private Long optionId;
     private String content;
 }

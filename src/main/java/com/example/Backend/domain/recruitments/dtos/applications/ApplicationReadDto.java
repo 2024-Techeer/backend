@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ApplicationReadDto {
-    private Long applicatoinId;
+    private Long applicationId;
     private List<QuestionReadDto> questions;
 
 }

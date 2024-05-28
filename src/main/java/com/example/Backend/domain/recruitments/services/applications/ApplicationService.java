@@ -69,7 +69,7 @@ public class ApplicationService {
     // 신청서 인스턴스를 해당 dto로 변환
     private ApplicationReadDto convertToApplicatoinReadDto(Application application) {
         ApplicationReadDto dto = new ApplicationReadDto();
-        dto.setApplicatoinId(application.getId());
+        dto.setApplicationId(application.getId());
 
         List<Question> questions = questionRepository.findByApplication(application);
         dto.setQuestions(questions.stream()
@@ -97,7 +97,7 @@ public class ApplicationService {
     // 선택지 인스턴스를 해당 dto로 변환
     private OptionReadDto convertToOptionReadDto(Option option) {
         OptionReadDto dto = new OptionReadDto();
-        dto.setOptoinId(option.getId());
+        dto.setOptionId(option.getId());
         dto.setContent(option.getContent());
         return dto;
     }
