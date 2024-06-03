@@ -31,7 +31,7 @@ public class S3FileService {
     private String bucketName;
 
     public String upload(MultipartFile file){
-        if(file.isEmpty() || Objects.isNull(file.getOriginalFiilename()));{
+        if(file.isEmpty() || Objects.isNull(file.getOriginalFilename())){
             throw new S3Exception(ErrorCode.EMPTY_FILE_EXCEPTION);
         }
         return this.uploadFile(file);
@@ -41,7 +41,7 @@ public class S3FileService {
         this.validateFileExtension(file.getOriginalFilename());
         try {
             return this.uploadFileToS3(file);
-        }catch (IOException e {
+        }catch (IOException e){
             throw new S3Exception(ErrorCode.IO_EXCEPTION_ON_FILE_UPLOAD);
         }
     }
