@@ -17,8 +17,8 @@ public class AnswerController {
     @Autowired
     private AnswerService answerService;
 
-    // 답변 생성
-    @PostMapping
+    // 답변 생성s
+    @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<?> createAnswer(@ModelAttribute AnswerCreateDto dto, @RequestParam(value ="file", required = false)MultipartFile file,
                                           @PathVariable Long questionId, @PathVariable Long submissionId) {
         try {
