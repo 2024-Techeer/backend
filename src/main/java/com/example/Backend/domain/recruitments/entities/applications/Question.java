@@ -22,7 +22,7 @@ public class Question {
     private Application application;
 
     @Column(nullable = false)
-    private String type;
+    private String type;//질문유형
 
     @Column(nullable = false)
     private String title;

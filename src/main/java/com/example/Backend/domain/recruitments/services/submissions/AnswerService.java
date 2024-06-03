@@ -26,7 +26,7 @@ public class AnswerService {
     private ChoiceRepository choiceRepository;
     @Autowired
     private OptionRepository optionRepository;
-
+//submission : 제출서
     public Answer createAnswer(AnswerCreateDto dto, Long questionId, Long submissionId) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 질문입니다."));
