@@ -74,6 +74,7 @@ public class RecruitmentService {
         recruitment.setEndDate(dto.getEndDate());
         recruitment.setDeadline(dto.getDeadline());
         recruitment.setUser(user);  // 사용자 연결
+        recruitment.setIntroduction(dto.getIntroduction());
 
         recruitmentRepository.save(recruitment);
 
@@ -138,6 +139,7 @@ public class RecruitmentService {
             dto.setDeadline(recruitment.getDeadline());
             dto.setClosing(recruitment.isClosing());
             dto.setUserId(recruitment.getUser().getId());
+            dto.setIntroduction(recruitment.getIntroduction());
 
             Application application = applicationRepository.findByRecruitmentId(recruitment.getId())
                     .orElseThrow(() -> new RuntimeException("이 모집글은 아직 신청서 양식이 없습니다."));
