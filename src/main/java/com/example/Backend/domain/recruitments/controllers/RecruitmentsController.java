@@ -6,10 +6,13 @@ import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentRead
 import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentUpdateDto;
 import com.example.Backend.domain.recruitments.entities.recruitments.Recruitment;
 import com.example.Backend.domain.recruitments.services.recruitments.RecruitmentService;
+import com.example.Backend.domain.user.services.S3ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +23,8 @@ public class RecruitmentsController {
 
     @Autowired
     private RecruitmentService recruitmentService;
+    @Autowired
+    private S3ImageService s3ImageService;
 
     // 모집글 생성
     @PostMapping
@@ -92,5 +97,17 @@ public class RecruitmentsController {
     public ResponseEntity<List<RecruitmentReadDto>> getAppliedRecruitment(){
         List<RecruitmentReadDto> recruitments = recruitmentService.filterAppliedRecruitments();
         return ResponseEntity.ok(recruitments);
+    }
+
+    @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) {
+        String imageUrl = "";
+        if (!file.isEmpty()) {
+            String photoUrl = s3ImageService.upload(file);
+            imageUrl = photoUrl;
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty");
+        }
+        return ResponseEntity.ok(imageUrl);
     }
 }
