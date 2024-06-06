@@ -51,6 +51,9 @@ public class Recruitment extends BaseEntity {
    @Column(nullable = false)
    private boolean closing = false;
 
+   @Column(nullable = true)
+   private String introduction;
+
    @OneToMany(mappedBy = "recruitment", cascade = CascadeType.ALL, orphanRemoval = true)
    private List<RecruitmentPosition> positions;
 
