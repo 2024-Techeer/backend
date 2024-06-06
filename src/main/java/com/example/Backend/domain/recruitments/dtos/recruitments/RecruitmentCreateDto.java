@@ -15,6 +15,7 @@ public class RecruitmentCreateDto {
     private Date startDate;
     private Date endDate;
     private Date deadline;
+    private String introduction;
 
     private List<Long> positionIds;    // 포지션 ID 목록
     private List<Long> techStackIds;  // 테크스택 ID 목록

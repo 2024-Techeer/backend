@@ -8,10 +8,12 @@ import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentCrea
 import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentDetailDto;
 import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentReadDto;
 import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentUpdateDto;
+import com.example.Backend.domain.recruitments.entities.applications.Application;
 import com.example.Backend.domain.recruitments.entities.recruitments.Recruitment;
 import com.example.Backend.domain.recruitments.entities.recruitments.RecruitmentPosition;
 import com.example.Backend.domain.recruitments.entities.recruitments.RecruitmentTechStack;
 import com.example.Backend.domain.recruitments.entities.submissions.Submission;
+import com.example.Backend.domain.recruitments.repositorties.applications.ApplicationRepository;
 import com.example.Backend.domain.recruitments.repositorties.recruitments.RecruitmentPositionRepository;
 import com.example.Backend.domain.recruitments.repositorties.recruitments.RecruitmentRepository;
 import com.example.Backend.domain.recruitments.repositorties.recruitments.RecruitmentTechStackRepository;
@@ -53,6 +55,9 @@ public class RecruitmentService {
     @Autowired
     private SubmissionRepository submissionRepository;
 
+    @Autowired
+    private ApplicationRepository applicationRepository;
+
     // 모집글 생성 메소드
     @Transactional
     public Recruitment createRecruitment(RecruitmentCreateDto dto) {
@@ -69,6 +74,7 @@ public class RecruitmentService {
         recruitment.setEndDate(dto.getEndDate());
         recruitment.setDeadline(dto.getDeadline());
         recruitment.setUser(user);  // 사용자 연결
+        recruitment.setIntroduction(dto.getIntroduction());
 
         recruitmentRepository.save(recruitment);
 
@@ -133,6 +139,11 @@ public class RecruitmentService {
             dto.setDeadline(recruitment.getDeadline());
             dto.setClosing(recruitment.isClosing());
             dto.setUserId(recruitment.getUser().getId());
+            dto.setIntroduction(recruitment.getIntroduction());
+
+            Application application = applicationRepository.findByRecruitmentId(recruitment.getId())
+                    .orElseThrow(() -> new RuntimeException("이 모집글은 아직 신청서 양식이 없습니다."));
+            dto.setApplicationId(application.getId());
 
             // Position 이름 추출
             List<String> positionNames = recruitmentPositionRepository.findByRecruitment(recruitment)
