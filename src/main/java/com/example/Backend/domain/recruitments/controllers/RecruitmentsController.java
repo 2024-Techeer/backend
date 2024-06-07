@@ -4,6 +4,7 @@ import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentCrea
 import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentDetailDto;
 import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentReadDto;
 import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentUpdateDto;
+import com.example.Backend.domain.recruitments.dtos.submissions.SubmissionStatusDto;
 import com.example.Backend.domain.recruitments.entities.recruitments.Recruitment;
 import com.example.Backend.domain.recruitments.services.recruitments.RecruitmentService;
 import com.example.Backend.domain.user.services.S3ImageService;
@@ -94,8 +95,8 @@ public class RecruitmentsController {
 
     // 내가 신청한 모집글 조회
     @GetMapping("/applied")
-    public ResponseEntity<List<RecruitmentReadDto>> getAppliedRecruitment(){
-        List<RecruitmentReadDto> recruitments = recruitmentService.filterAppliedRecruitments();
+    public ResponseEntity<List<SubmissionStatusDto>> getAppliedRecruitment(){
+        List<SubmissionStatusDto> recruitments = recruitmentService.filterAppliedRecruitments();
         return ResponseEntity.ok(recruitments);
     }
 
