@@ -21,20 +21,12 @@ import java.util.Map;
 public class SubmissionController {
     @Autowired
     private SubmissionService submissionService;
-    @Autowired
-    private EmailService emailService;
-    @Autowired
-    private ApplicationRepository applicationRepository;
-    @Autowired
-    private RecruitmentRepository recruitmentRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     // 제출서 생성
     @PostMapping
     public ResponseEntity<?> createSubmission(@PathVariable Long applicationId) {
         Submission submission = submissionService.createSubmission(applicationId);
-        Recruitment recruitment = applicationRepository.findById(applicationId).get().getRecruitment();
+
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("submissionId", submission.getId()));
     }
 

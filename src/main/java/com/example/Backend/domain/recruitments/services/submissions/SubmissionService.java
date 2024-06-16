@@ -12,9 +12,11 @@ import com.example.Backend.domain.recruitments.repositorties.submissions.AnswerR
 import com.example.Backend.domain.recruitments.repositorties.applications.ApplicationRepository;
 import com.example.Backend.domain.recruitments.repositorties.submissions.ChoiceRepository;
 import com.example.Backend.domain.recruitments.repositorties.submissions.SubmissionRepository;
+import com.example.Backend.domain.recruitments.services.Email.EmailService;
 import com.example.Backend.domain.user.entities.User;
 import com.example.Backend.domain.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,6 +39,9 @@ public class SubmissionService {
     private AnswerRepository answerRepository;
     @Autowired
     private ChoiceRepository choiceRepository;
+    @Autowired
+    private EmailService emailService;
+
 
     // 제출서 생성
     public Submission createSubmission(Long applicationId) {
@@ -52,6 +57,9 @@ public class SubmissionService {
 
         submission.setApplication(application);
         submission.setUser(user);
+
+        String ownerMail = application.getRecruitment().getUser().getEmail();
+        emailService.sendSimpleEmail(ownerMail, "[Gaemoim] 회원님의 모집글에 지원한 사람이 있습니다.", "링크");
 
         return submissionRepository.save(submission);
 
@@ -139,6 +147,9 @@ public class SubmissionService {
 
         submission.setStatus("accepted");
         submissionRepository.save(submission);
+
+        String email = submission.getUser().getEmail();
+        emailService.sendSimpleEmail(email, "[Gaemoim] 회원님의 지원이 수락 되었습니다.", "링크");
     }
 
     // 제출서 거절
@@ -152,5 +163,8 @@ public class SubmissionService {
 
         submission.setStatus("rejected");
         submissionRepository.save(submission);
+
+        String email = submission.getUser().getEmail();
+        emailService.sendSimpleEmail(email, "[Gaemoim] 회원님의 지원이 거절 되었습니다.", "링크");
     }
 }
