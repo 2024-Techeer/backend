@@ -3,7 +3,12 @@ package com.example.Backend.domain.recruitments.controllers.submissions;
 import com.example.Backend.domain.recruitments.dtos.submissions.SubmissionDetailDto;
 import com.example.Backend.domain.recruitments.dtos.submissions.SubmissionReadDto;
 import com.example.Backend.domain.recruitments.entities.submissions.Submission;
+import com.example.Backend.domain.recruitments.repositorties.applications.ApplicationRepository;
+import com.example.Backend.domain.recruitments.repositorties.recruitments.RecruitmentRepository;
+import com.example.Backend.domain.recruitments.services.Email.EmailService;
+import com.example.Backend.domain.recruitments.services.recruitments.RecruitmentService;
 import com.example.Backend.domain.recruitments.services.submissions.SubmissionService;
+import com.example.Backend.domain.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +26,7 @@ public class SubmissionController {
     @PostMapping
     public ResponseEntity<?> createSubmission(@PathVariable Long applicationId) {
         Submission submission = submissionService.createSubmission(applicationId);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("submissionId", submission.getId()));
     }
 

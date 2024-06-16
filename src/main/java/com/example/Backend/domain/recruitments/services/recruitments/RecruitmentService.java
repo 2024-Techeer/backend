@@ -8,6 +8,7 @@ import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentCrea
 import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentDetailDto;
 import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentReadDto;
 import com.example.Backend.domain.recruitments.dtos.recruitments.RecruitmentUpdateDto;
+import com.example.Backend.domain.recruitments.dtos.submissions.SubmissionStatusDto;
 import com.example.Backend.domain.recruitments.entities.applications.Application;
 import com.example.Backend.domain.recruitments.entities.recruitments.Recruitment;
 import com.example.Backend.domain.recruitments.entities.recruitments.RecruitmentPosition;
@@ -245,46 +246,43 @@ public class RecruitmentService {
     }
 
     // 내가 신청한 모집글 조회
-    public List<RecruitmentReadDto> filterAppliedRecruitments() {
+    public List<SubmissionStatusDto> filterAppliedRecruitments() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName(); // 유저의 이메일 추출
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userEmail)); // 유저의 이메일을 기준으로 User 인스턴스 추출
 
         List<Submission> submissions = submissionRepository.findByUser(user);
-        List<RecruitmentReadDto> dtos = new ArrayList<>();
+        List<SubmissionStatusDto> dtos = new ArrayList<>();
 
-        for(Submission s : submissions) {
+        for (Submission s : submissions) {
             Recruitment recruitment = s.getApplication().getRecruitment();
-            RecruitmentReadDto dto = new RecruitmentReadDto();
-            dto.setId(recruitment.getId());
-            dto.setTitle(recruitment.getTitle());
+            SubmissionStatusDto dto = new SubmissionStatusDto();
             dto.setType(recruitment.getType());
+            dto.setTitle(recruitment.getTitle());
             dto.setNumber(recruitment.getNumber());
             dto.setStartDate(recruitment.getStartDate());
             dto.setEndDate(recruitment.getEndDate());
             dto.setDeadline(recruitment.getDeadline());
-            dto.setClosing(recruitment.isClosing());
-            dto.setUserId(recruitment.getUser().getId());
+            dto.setStatus(s.getStatus());
 
-            // Position 이름 추출
-            List<String> positionNames = recruitmentPositionRepository.findByRecruitment(recruitment).stream()
-                    .map(recruitmentPosition -> recruitmentPosition.getPosition().getName())
+            // Position IDs 추출
+            List<Long> positionIds = recruitmentPositionRepository.findByRecruitment(recruitment).stream()
+                    .map(recruitmentPosition -> recruitmentPosition.getPosition().getId())
                     .collect(Collectors.toList());
-            dto.setPositions(positionNames);
+            dto.setPositionIds(positionIds);
 
-            // TechStack 이름 추출
-            List<String> techStackNames = recruitmentTechStackRepository.findByRecruitment(recruitment).stream()
-                    .map(recruitmentTechStack -> recruitmentTechStack.getTechStack().getName())
+            // TechStack IDs 추출
+            List<Long> techStackIds = recruitmentTechStackRepository.findByRecruitment(recruitment).stream()
+                    .map(recruitmentTechStack -> recruitmentTechStack.getTechStack().getId())
                     .collect(Collectors.toList());
-            dto.setTechStacks(techStackNames);
+            dto.setTechStackIds(techStackIds);
 
             dtos.add(dto);
         }
 
         return dtos;
     }
-
     // 모집글 수정 메소드
     public Recruitment updateRecruitment(Long recruitmentId, RecruitmentUpdateDto dto) {
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId)
