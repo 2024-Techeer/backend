@@ -50,13 +50,16 @@ public class ProfileController {
         }
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<?> updateProfile(@PathVariable Long userId, @RequestBody ProfileUpdateDto profileUpdateDto){
-        try{
-            User updatedUser = profileservice.updateProfile(userId, profileUpdateDto);
+    @PutMapping(value = "/{userId}", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> updateProfile(
+            @PathVariable Long userId,
+            @RequestPart("profile") ProfileUpdateDto profileUpdateDto,
+            @RequestPart(value = "photo", required = false) MultipartFile photoFile) {
+        try {
+            User updatedUser = profileservice.updateProfile(userId, profileUpdateDto, photoFile);
             return ResponseEntity.ok(updatedUser);
-        } catch(Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Failed to update profile: " +e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Failed to update profile: " + e.getMessage()));
         }
     }
     @DeleteMapping("/{userId}")
