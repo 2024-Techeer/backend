@@ -66,8 +66,8 @@ public class ProfileController {
             @RequestPart("profile") ProfileUpdateDto profileUpdateDto,
             @RequestPart(value = "photo", required = false) MultipartFile photoFile) {
         try {
-            User updatedUser = profileservice.updateProfile(userId, profileUpdateDto, photoFile);
-            return ResponseEntity.ok(updatedUser);
+            profileservice.updateProfile(userId, profileUpdateDto, photoFile);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Failed to update profile: " + e.getMessage()));
         }

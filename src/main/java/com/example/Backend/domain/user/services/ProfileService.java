@@ -4,6 +4,9 @@ import com.example.Backend.domain.common.entities.Position;
 import com.example.Backend.domain.common.entities.TechStack;
 import com.example.Backend.domain.common.repositories.PositionRepository;
 import com.example.Backend.domain.common.repositories.TechStackRepository;
+import com.example.Backend.domain.recruitments.entities.recruitments.Recruitment;
+import com.example.Backend.domain.recruitments.entities.recruitments.RecruitmentPosition;
+import com.example.Backend.domain.recruitments.entities.recruitments.RecruitmentTechStack;
 import com.example.Backend.domain.user.dto.profiles.ProfileDto;
 import com.example.Backend.domain.user.dto.profiles.ProfileUpdateDto;
 import com.example.Backend.domain.user.dto.profiles.ProfileViewDto;
@@ -21,7 +24,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -95,7 +100,7 @@ public class ProfileService {
     }
 
     @Transactional
-    public User updateProfile(Long userId, ProfileUpdateDto profileUpdateDto, MultipartFile photoFile) {
+    public void updateProfile(Long userId, ProfileUpdateDto profileUpdateDto, MultipartFile photoFile) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found with id :" + userId));
 
         // 사진 파일이 있으면 S3에 업로드하고 URL을 설정
@@ -110,8 +115,70 @@ public class ProfileService {
         user.setResidence(profileUpdateDto.getResidence());
         user.setStatus(profileUpdateDto.getStatus());
         user.setGithub(profileUpdateDto.getGithub());
+
+        if(profileUpdateDto.getPositions() != null) {
+            updateUserPositions(user, profileUpdateDto.getPositions());
+        }
+
+        if(profileUpdateDto.getTechStacks() != null) {
+            updateUserTechStacks(user, profileUpdateDto.getTechStacks());
+        }
         userRepository.save(user);
-        return user;
+        return;
+    }
+
+
+    // 모집글 포지션 수정 메소드
+    private void updateUserPositions(User user, List<String> newPositionNames) {
+        List<UserPosition> existingPositions = userPositionRepository.findByUser(user);
+        Set<Long> existingPositionIds = existingPositions.stream()
+                .map(rp -> rp.getPosition().getId())
+                .collect(Collectors.toSet());
+        List<Long> newPositionIds = positionRepository.findAllIdsByName(newPositionNames);
+
+        // 원래 존재하던 포지션이 새로운 포지션 목록엔 없으면 삭제
+        Set<Long> newPositionIdSet = new HashSet<>(newPositionIds);
+        existingPositions.forEach(rp -> {
+            if(!newPositionIdSet.contains(rp.getPosition().getId())) {
+                userPositionRepository.delete(rp);
+            }
+        });
+
+        // 원래 존재하던 포지션에 없던 새로운 포지션 목록이면 추가
+        newPositionIdSet.forEach(id -> {
+            if(!existingPositionIds.contains(id)) {
+                Position position = positionRepository.findById(id).orElseThrow(
+                        () -> new IllegalArgumentException("존재하지 않는 Position의 아이디입니다: " + id));
+                userPositionRepository.save(new UserPosition(null, user, position));
+            }
+        });
+    }
+
+    // 모집글 기술스택 수정 메소드
+    private void updateUserTechStacks(User user, List<String> newTechStackNames) {
+        List<UserTechStack> existingTechStacks = userTechStackRepository.findByUser(user);
+        Set<Long> existingTechStackIds = existingTechStacks.stream()
+                .map(rt -> rt.getTechStack().getId())
+                .collect(Collectors.toSet());
+
+        List<Long> newTechStackIds = techStackRepository.findAllIdsByName(newTechStackNames);
+
+        Set<Long> newTechStackIdSet = new HashSet<>(newTechStackIds);
+        // 원래 존재하던 기술스택이 새로운 기술스택 목록엔 없으면 삭제
+        existingTechStacks.forEach(rt -> {
+            if (!newTechStackIdSet.contains(rt.getTechStack().getId())) {
+                userTechStackRepository.delete(rt);
+            }
+        });
+
+        // 원래 존재하던 기술스택에 없던 새로운 기술스택 목록이면 추가
+        newTechStackIdSet.forEach(id -> {
+            if (!existingTechStackIds.contains(id)) {
+                TechStack techStack = techStackRepository.findById(id).orElseThrow(
+                        () -> new IllegalArgumentException("존재하지 않는 TechStack의 아이디입니다: " + id));
+                userTechStackRepository.save(new UserTechStack(null, user, techStack));
+            }
+        });
     }
 
     public void deleteProfile(Long userId){
