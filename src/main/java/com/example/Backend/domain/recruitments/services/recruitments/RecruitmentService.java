@@ -258,6 +258,7 @@ public class RecruitmentService {
         for (Submission s : submissions) {
             Recruitment recruitment = s.getApplication().getRecruitment();
             SubmissionStatusDto dto = new SubmissionStatusDto();
+            dto.setId(recruitment.getId());
             dto.setType(recruitment.getType());
             dto.setTitle(recruitment.getTitle());
             dto.setNumber(recruitment.getNumber());

@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class SubmissionStatusDto {
+    private Long id;
     private String type;
     private String title;
     private Integer number;
