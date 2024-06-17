@@ -86,10 +86,21 @@ public class ProfileService {
     }
 
     @Transactional
-    public User updateProfile(Long userId, ProfileUpdateDto profileUpdateDto){
-        User user=userRepository.findById(userId).orElseThrow(()->new UsernameNotFoundException("User not found with id :" +userId));
+    public User updateProfile(Long userId, ProfileUpdateDto profileUpdateDto, MultipartFile photoFile) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found with id :" + userId));
 
-        updateProfileData(user, profileUpdateDto);
+        // 사진 파일이 있으면 S3에 업로드하고 URL을 설정
+        if (photoFile != null && !photoFile.isEmpty()) {
+            String photoUrl = s3ImageService.upload(photoFile);
+            System.out.println(photoUrl); // S3 업로드 후 URL 반환
+            user.setPhoto(photoUrl);
+        }
+
+        user.setGender(profileUpdateDto.getGender());
+        user.setIntro(profileUpdateDto.getIntro());
+        user.setResidence(profileUpdateDto.getResidence());
+        user.setStatus(profileUpdateDto.getStatus());
+        user.setGithub(profileUpdateDto.getGithub());
         userRepository.save(user);
         return user;
     }
@@ -123,14 +134,14 @@ public class ProfileService {
         return profileViewDto;
     }
 
-    private void updateProfileData(User user, ProfileUpdateDto profileUpdateDto){
-        user.setPhoto(profileUpdateDto.getPhoto());
-        user.setGender(profileUpdateDto.getGender());
-        user.setIntro(profileUpdateDto.getIntro());
-        user.setResidence(profileUpdateDto.getResidence());
-        user.setStatus(profileUpdateDto.getStatus());
-        user.setGithub(profileUpdateDto.getGithub());
-    }
+//    private void updateProfileData(User user, ProfileUpdateDto profileUpdateDto){
+//        user.setPhoto(profileUpdateDto.getPhoto());
+//        user.setGender(profileUpdateDto.getGender());
+//        user.setIntro(profileUpdateDto.getIntro());
+//        user.setResidence(profileUpdateDto.getResidence());
+//        user.setStatus(profileUpdateDto.getStatus());
+//        user.setGithub(profileUpdateDto.getGithub());
+//    }
 }
 /*
 * 코드에서 UserPosition 객체를 저장할 때, JPA는 user와 position 객체의 ID를 추출하여 user_id와 position_id 외래 키 필드에 저장합니다.
