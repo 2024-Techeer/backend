@@ -85,6 +85,15 @@ public class ProfileService {
         return convertToProfileViewDto(user);
     }
 
+    public ProfileViewDto getMyProfile(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = authentication.getName(); // 유저의 이메일 추출
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + userEmail)); // 유저의 이메일을 기준으로 User 인스턴스 추출
+
+        return convertToProfileViewDto(user);
+    }
+
     @Transactional
     public User updateProfile(Long userId, ProfileUpdateDto profileUpdateDto, MultipartFile photoFile) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found with id :" + userId));

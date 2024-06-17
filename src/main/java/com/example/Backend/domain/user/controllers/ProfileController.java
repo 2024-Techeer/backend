@@ -50,6 +50,16 @@ public class ProfileController {
         }
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<?> getMyProfile() {
+        try{
+            ProfileViewDto profile = profileservice.getMyProfile();
+            return ResponseEntity.ok(profile);
+        } catch(Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Profile not found: " +e.getMessage()));
+        }
+    }
+
     @PutMapping(value = "/{userId}", consumes = {"multipart/form-data"})
     public ResponseEntity<?> updateProfile(
             @PathVariable Long userId,
