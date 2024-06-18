@@ -20,7 +20,7 @@ public class SubmissionStatusDto {
     @Getter
     private String status;
 
-    private List<Long> positionIds;
-    private List<Long> techStackIds;
+    private List<String> positions;
+    private List<String> techStacks;
 
 }

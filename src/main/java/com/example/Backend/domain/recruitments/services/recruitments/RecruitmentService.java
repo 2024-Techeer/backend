@@ -267,17 +267,17 @@ public class RecruitmentService {
             dto.setDeadline(recruitment.getDeadline());
             dto.setStatus(s.getStatus());
 
-            // Position IDs 추출
-            List<Long> positionIds = recruitmentPositionRepository.findByRecruitment(recruitment).stream()
-                    .map(recruitmentPosition -> recruitmentPosition.getPosition().getId())
+            // Position 이름 추출
+            List<String> positionNames = recruitmentPositionRepository.findByRecruitment(recruitment).stream()
+                    .map(recruitmentPosition -> recruitmentPosition.getPosition().getName())
                     .collect(Collectors.toList());
-            dto.setPositionIds(positionIds);
+            dto.setPositions(positionNames);
 
-            // TechStack IDs 추출
-            List<Long> techStackIds = recruitmentTechStackRepository.findByRecruitment(recruitment).stream()
-                    .map(recruitmentTechStack -> recruitmentTechStack.getTechStack().getId())
+            // TechStack 이름 추출
+            List<String> techStackNames = recruitmentTechStackRepository.findByRecruitment(recruitment).stream()
+                    .map(recruitmentTechStack -> recruitmentTechStack.getTechStack().getName())
                     .collect(Collectors.toList());
-            dto.setTechStackIds(techStackIds);
+            dto.setTechStacks(techStackNames);
 
             dtos.add(dto);
         }
