@@ -186,6 +186,7 @@ public class ProfileService {
     }
     private ProfileViewDto convertToProfileViewDto(User user){
         ProfileViewDto profileViewDto = new ProfileViewDto();
+        profileViewDto.setName(user.getName());
         profileViewDto.setId(user.getId());
         profileViewDto.setPhoto(user.getPhoto());
         profileViewDto.setGender(user.getGender());

@@ -5,6 +5,7 @@ import java.util.List;
 
 @Data
 public class ProfileViewDto {
+    private String name;
     private Long id;
     private String photo;
     private String gender;
