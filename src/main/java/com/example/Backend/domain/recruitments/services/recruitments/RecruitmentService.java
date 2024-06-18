@@ -139,6 +139,7 @@ public class RecruitmentService {
             dto.setEndDate(recruitment.getEndDate());
             dto.setDeadline(recruitment.getDeadline());
             dto.setClosing(recruitment.isClosing());
+            dto.setName(recruitment.getUser().getName());
             dto.setUserId(recruitment.getUser().getId());
             dto.setIntroduction(recruitment.getIntroduction());
 

@@ -21,6 +21,7 @@ public class RecruitmentDetailDto {
     private List<String> positions; // Position의 이름을 담는 리스트
     private List<String> techStacks; // TechStack의 이름을 담는 리스트
     private Long userId; // User의 ID
+    private String name;
     private Long applicationId; // 신청서 양식 Id
 }
 
