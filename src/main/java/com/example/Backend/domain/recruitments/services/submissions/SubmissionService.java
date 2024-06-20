@@ -75,6 +75,9 @@ public class SubmissionService {
                 .map(Submission::getId)
                 .collect(Collectors.toList()));
 
+        dto.setProfiles(submissions.stream()
+                .map(submission -> submission.getUser().getPhoto()).collect(Collectors.toList()));
+
         dto.setUserIds(submissions.stream()
                 .map(submission -> submission.getUser().getId()).collect(Collectors.toList()));
 

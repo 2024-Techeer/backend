@@ -8,6 +8,7 @@ import java.util.List;
 @Setter
 @Getter
 public class SubmissionReadDto {
+    private List<String> profiles;
     private List<Long> submissionIds;
     private List<Long> userIds;
     private List<String> userNames;
