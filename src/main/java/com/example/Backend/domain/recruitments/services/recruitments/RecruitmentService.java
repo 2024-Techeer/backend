@@ -143,6 +143,7 @@ public class RecruitmentService {
             dto.setUserId(recruitment.getUser().getId());
             dto.setPhoto(recruitment.getUser().getPhoto());
             dto.setIntroduction(recruitment.getIntroduction());
+            dto.setCreatedDate(recruitment.getCreatedAt());
 
             Application application = applicationRepository.findByRecruitmentId(recruitment.getId())
                     .orElseThrow(() -> new RuntimeException("이 모집글은 아직 신청서 양식이 없습니다."));

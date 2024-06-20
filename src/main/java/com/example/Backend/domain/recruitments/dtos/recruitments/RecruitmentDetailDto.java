@@ -13,6 +13,7 @@ public class RecruitmentDetailDto {
     private String title;
     private String type;
     private Integer number;
+    private Date createdDate;
     private Date startDate;
     private Date endDate;
     private Date deadline;
