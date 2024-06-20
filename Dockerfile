@@ -25,13 +25,17 @@ RUN ./gradlew bootJar
 # 최종 이미지
 FROM bellsoft/liberica-openjdk-alpine:17
 
+# wait-for-it.sh와 init_data.sh 복사
+COPY wait-for-it.sh init_data.sh /
+
+# 실행 권한 추가
+RUN chmod +x /wait-for-it.sh /init_data.sh
+
 # build이미지에서 build/libs/*.jar 파일을 app.jar로 복사
 COPY --from=builder build/libs/*.jar app.jar
 
 # jar 파일 실행
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENTRYPOINT ["/bin/sh", "-c", "/wait-for-it.sh mysqldb:3306 -- /init_data.sh && java -jar /app.jar"]
 
 # 볼륨 지정
 VOLUME /tmp
-
-
