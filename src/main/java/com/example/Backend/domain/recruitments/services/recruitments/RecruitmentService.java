@@ -141,6 +141,7 @@ public class RecruitmentService {
             dto.setClosing(recruitment.isClosing());
             dto.setName(recruitment.getUser().getName());
             dto.setUserId(recruitment.getUser().getId());
+            dto.setPhoto(recruitment.getUser().getPhoto());
             dto.setIntroduction(recruitment.getIntroduction());
 
             Application application = applicationRepository.findByRecruitmentId(recruitment.getId())
