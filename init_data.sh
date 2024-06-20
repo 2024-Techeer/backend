@@ -1,7 +1,7 @@
 # 환경 변수 로드
 export $(grep -v '^#' /app/backend/.env | xargs)
 
-mysql --default-auth=mysql_native_password -h mysqldb -u root -p${MYSQL_ROOT_PASSWORD} <<EOF
+mysql -h mysqldb -u root -p${MYSQL_ROOT_PASSWORD} <<EOF
 USE ${MYSQL_DATABASE};
 INSERT INTO positions (name) VALUES
 ('backend'),
