@@ -35,7 +35,7 @@ COPY wait-for-it.sh init_data.sh /app/backend/
 RUN chmod +x /app/backend/wait-for-it.sh /app/backend/init_data.sh
 
 # .env 파일 복사
-COPY ../.env /app/backend/.env
+COPY .env /app/backend/.env
 
 # build이미지에서 build/libs/*.jar 파일을 app.jar로 복사
 COPY --from=builder build/libs/*.jar app.jar

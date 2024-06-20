@@ -2,6 +2,7 @@
 .vscode/
 .classpath
 .project
+.env
 
 target/
 build/
