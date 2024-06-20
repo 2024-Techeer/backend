@@ -49,7 +49,7 @@ public class SecurityConfig  {//WebSecurityConfigurerAdapter 클래스가 Spring
                 .csrf(AbstractHttpConfigurer :: disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost", "http://www.gaemoim.site"));
+                    config.setAllowedOrigins(Arrays.asList("*"));
                     config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
                     config.setAllowedHeaders(Arrays.asList("*"));
                     config.setAllowCredentials(true);
