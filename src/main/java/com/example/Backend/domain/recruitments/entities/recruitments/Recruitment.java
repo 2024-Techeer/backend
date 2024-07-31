@@ -59,4 +59,9 @@ public class Recruitment extends BaseEntity {
 
    @OneToMany(mappedBy = "recruitment", cascade = CascadeType.ALL, orphanRemoval = true)
    private List<RecruitmentTechStack> techStacks;
+
+   /*
+   @OneToMany 관계를 사용한 필드(positions와 techStacks)는 직접적으로 데이터베이스 테이블의 컬럼으로 생성되지 않습니다. 
+   대신, 이러한 관계는 데이터베이스에서 연관된 테이블과의 관계를 정의하며, 실제 컬럼은 연관된 엔터티 클래스의 테이블에서 생성
+   */
 }
