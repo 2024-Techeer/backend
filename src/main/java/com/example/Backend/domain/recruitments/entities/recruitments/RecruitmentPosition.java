@@ -28,3 +28,6 @@ public class RecruitmentPosition {
     private Position position;
 }
 //Recruitment --- Position 중간테이블
+/*
+@ManyToOne 관계와 @JoinColumn 애너테이션을 사용하면, 해당 필드에 외래 키(Foreign Key) 컬럼이 생성됩니다
+*/
